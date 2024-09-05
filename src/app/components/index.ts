@@ -5,5 +5,6 @@ import PlayList from "./Playlist";
 import Player from "./Player";
 import Sidebar from "./Sidebar";
 import Suggestion from "./Suggestion";
+import CurrentSong from "./CurrentSong";
 
-export { Banner, Center, Nav, PlayList, Player, Sidebar, Suggestion };
+export { Banner, Center, Nav, PlayList, Player, Sidebar, CurrentSong, Suggestion };

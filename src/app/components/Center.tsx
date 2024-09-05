@@ -7,7 +7,7 @@ interface CenterProp {
 
 const Center: React.FC<CenterProp> = (props) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full bg-[#18191b] px-6">
       <Nav />
       <Banner />
       <Suggestion />

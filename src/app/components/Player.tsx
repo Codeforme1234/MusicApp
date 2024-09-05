@@ -6,9 +6,7 @@ interface Playerprop {
 
 const Player: React.FC<Playerprop> = (props) => {
   return (
-    <div>
-      {/* Component content */}
-    </div>
+    <div className='text-white'>dfjkhsdifhuio</div>
   );
 };
 
