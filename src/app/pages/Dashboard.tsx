@@ -7,7 +7,7 @@ const Dashboard: React.FC<DashProp> = (props) => {
   return (
     <div className="flex relative h-screen flex-col justify-center items-center w-screen">
       <div className="flex flex-row w-full">
-        <div className="flex w-[20%] flex-col">
+        <div className="flex w-[20%] flex-col pb-10">
           <Sidebar />
           <CurrentSong />
         </div>
