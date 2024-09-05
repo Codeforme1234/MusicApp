@@ -8,11 +8,11 @@ interface SuggestionProp {
 
 const Suggestion: React.FC<SuggestionProp> = (props) => {
   return (
-    <div className="mt-4 overflow-scroll no-scrollbar overflow-x-hidden">
-      <div className="h-[440px]">
+    <div className="mt-6 pb-10">
+      <div className="">
         <div>
-          <div className="flex justify-between items-end">
-            <h1 className="text-white text-2xl font-bold">Hello, Woilon</h1>
+        <div className="flex justify-between items-end">
+          <h1 className="text-white text-2xl font-bold">Hello, Woilon</h1>
             <button className="text-gray-400 text-sm font-semibold">
               See all
             </button>

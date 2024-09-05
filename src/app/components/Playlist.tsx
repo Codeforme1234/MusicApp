@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface PlaylistProp {
   // Define your props here
@@ -7,7 +7,8 @@ interface PlaylistProp {
 const PlayList: React.FC<PlaylistProp> = (props) => {
   return (
     <div>
-      {/* Component content */}
+      <div>Playlist</div>
+      <div className="bg-[#0a0a0a]"></div>
     </div>
   );
 };

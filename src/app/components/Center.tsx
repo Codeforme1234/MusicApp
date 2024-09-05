@@ -9,8 +9,11 @@ const Center: React.FC<CenterProp> = (props) => {
   return (
     <div className="flex flex-col w-full bg-[#18191b] px-6">
       <Nav />
-      <Banner />
-      <Suggestion />
+      <div className="overflow-scroll no-scrollbar overflow-x-hidden">
+        <div className="h-[665px]"></div>
+        <Banner />
+        <Suggestion />
+      </div>
     </div>
   );
 };

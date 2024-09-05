@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import logo from "../../public/logo.png"
+import logo from "../../public/logo.png";
 
 interface Props {
   // Define your props here
@@ -14,9 +14,8 @@ const Banner: React.FC<Props> = (props) => {
         <div className="">
           <Image
             src={logo}
-            className="rounded-xl  object-cover"
+            className="rounded-xl h-[300px] object-cover"
             alt="banner"
-            height={200}
           />
         </div>
       </div>
