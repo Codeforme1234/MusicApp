@@ -1,17 +1,36 @@
 "use client";
-import { useState } from "react";
-import { Sidebar, Center, PlayList, CurrentSong, Player } from "../components";
+import React, { useState, useEffect } from "react";
+import { Sidebar, PlayList, Player, Center, CurrentSong } from "../components";
 import openmenu from "../../public/open-line-svgrepo-com.svg";
 import Image from "next/image";
-import right from "../../../public/right-2-svgrepo-com.svg";
+import right from "../../public/right-2-svgrepo-com.svg";
+import logo from "../../public/Untitled design (6).png";
 
-interface DashProp {}
-
-const Dashboard: React.FC<DashProp> = (props) => {
+const Dashboard = () => {
   const [open, setOpen] = useState(false);
+  const [play, setPlay] = useState(false);
   const [openPlaylist, setOpenPlaylist] = useState(false);
   const [openSidebar, setSidebar] = useState(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState("day");
+
+  const handlePlay = () => {
+    setPlay(!play);
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === "day" ? "night" : "day");
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleSidebar = () => {
     setOpen(!open);
   };
@@ -22,15 +41,28 @@ const Dashboard: React.FC<DashProp> = (props) => {
   const handleSidebarClick = () => {
     setSidebar(!openSidebar);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen w-screen bg-black">
+        <Image
+          src={logo}
+          className="animate-bounce h-12 w-12"
+          alt="Loading..."
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex relative h-screen flex-col   w-screen overflow-x-clip">
+    <div className={`flex relative h-screen flex-col w-screen overflow-x-clip ${theme === 'day' ? 'bg-white text-black' : 'bg-gray-900 text-white'}`}>
       <div className="flex flex-row w-full h-full">
         <div
-          className={` bg-[#101011] h-full md:block ${
-            openSidebar ? " w-full absolute top-0 right-0 z-50 block" : "hidden"
+          className={`bg-[#101011] h-full lg:block transition-all duration-500 ease-in-out ${
+            openSidebar ? "w-full absolute top-0 right-0 z-50 block" : "hidden"
           } ${open ? "w-6" : "w-[20%]"}`}
         >
-          <div className={`flex flex-col h-full`}>
+          <div className="flex flex-col h-full">
             <button
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
@@ -38,7 +70,7 @@ const Dashboard: React.FC<DashProp> = (props) => {
             >
               <Image
                 src={right}
-                className={`mt-10  ${open ? "block" : "hidden"}`}
+                className={`mt-10 ${open ? "block" : "hidden"}`}
                 alt="open"
               />
             </button>
@@ -54,31 +86,45 @@ const Dashboard: React.FC<DashProp> = (props) => {
             <CurrentSong />
           </div>
         </div>
-      </div>
-      <div
-        className={` flex  ${
-          open ? " w-full md:w-[80%]" : " w-full md:w-[60%]"
-        }`}
-      >
-        <Center
-          handleSidebarClick={handleSidebarClick}
-          handlePlaylistClick={handlePlaylistClick}
-        />
-      </div>
-      <div
-        className={`md:block   ${
-          openPlaylist
-            ? " w-full absolute top-0 right-0 z-50 block"
-            : "md:w-[20%] "
-        }`}
-      >
-        <div className="flex ">
-          <PlayList handlePlaylistClick={handlePlaylistClick} />
+        <div
+          className={`flex h-screen transition-all duration-500 ease-in-out ${
+            open ? "w-full lg:w-[80%]" : "w-full lg:w-[60%]"
+          }`}
+        >
+          <Center
+            theme={theme}
+            handlePlay={handlePlay}
+            handleSidebarClick={handleSidebarClick}
+            handlePlaylistClick={handlePlaylistClick}
+          />
+        </div>
+        <div
+          className={`md:block transition-all duration-500 ease-in-out ${
+            openPlaylist
+              ? "w-full absolute top-0 right-0 z-50 block"
+              : "lg:w-[20%]"
+          }`}
+        >
+          <div className="flex">
+            <PlayList
+              theme={theme}
+              handlePlay={handlePlay}
+              handlePlaylistClick={handlePlaylistClick}
+            />
+          </div>
         </div>
       </div>
       <div className="absolute bottom-0">
-        <Player />
+        <Player play={play} theme={theme} />
       </div>
+
+      {/* Day/Night Toggle Button */}
+      <button
+        onClick={toggleTheme}
+        className="fixed top-4 right-4 bg-blue-500 text-white p-2 rounded"
+      >
+        Switch to {theme === "day" ? "Night" : "Day"} Mode
+      </button>
     </div>
   );
 };

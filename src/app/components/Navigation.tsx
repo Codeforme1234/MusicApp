@@ -1,22 +1,25 @@
 import React from "react";
 import right from "../../public/right-2-svgrepo-com.svg";
 import left from "../../public/left-2-svgrepo-com.svg";
-import dots from "../../public/dots-horizontal-svgrepo-com.svg";
+import dots from "../../public/dots-horizontal-svgrepo-com.svg"
 import Image from "next/image";
-import menu from "../../../public/menu-alt-02-svgrepo-com.svg";
-interface PlaylistmenuProps {
-  handlePlaylistClick: () => void;
-  handleSidebarClick: () => void;
-}
+import menu from '../../public/menu-alt-02-svgrepo-com.svg'
 
-const Nav: React.FC<PlaylistmenuProps> = ({
-  handlePlaylistClick,
-  handleSidebarClick,
-}) => {
+interface PlaylistmenuProps {
+    handlePlaylistClick: () => void;
+    handleSidebarClick: () => void;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
+  }
+  const Navigation: React.FC<PlaylistmenuProps> = ({ handlePlaylistClick, handleSidebarClick, searchQuery, setSearchQuery }) => {
   return (
     <div className="w-full flex mt-6 gap-6 justify-center items-center">
       <div className="w-1/8 flex gap-2 ">
-        <button onClick={handleSidebarClick}>
+      <div className="lg:block hidden ">
+
+      <Image  src={left} alt="left" />{" "}
+      </div>
+        <button className="lg:hidden block" onClick={handleSidebarClick}>
           <Image src={left} alt="left" />{" "}
         </button>
         <div>
@@ -28,6 +31,8 @@ const Nav: React.FC<PlaylistmenuProps> = ({
         <div className="relative py-3  rounded-3xl w-full max-w-4xl">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="rounded-3xl p-3 w-full placeholder:w-[80%] md:placeholder:w-full"
             placeholder="Search for artist, songs or albums"
           />
@@ -50,15 +55,10 @@ const Nav: React.FC<PlaylistmenuProps> = ({
           </button>
         </div>
       </div>
-      <button className="w-1/8 md:block hidden">
-        {" "}
-        <Image src={dots} alt="menu" />{" "}
-      </button>
-      <button onClick={handlePlaylistClick} className="w-1/8 md:hidden block">
-        <Image src={menu} alt="menu" />{" "}
-      </button>
+      <button  className="w-1/8 lg:block hidden"> <Image src={dots} alt="menu"/> </button>
+      <button  onClick={handlePlaylistClick} className="w-1/8 lg:hidden block"><Image src={menu}  alt="menu"/>  </button>
     </div>
   );
 };
 
-export default Nav;
+export default Navigation;
