@@ -2,7 +2,7 @@ import Image from "next/image";
 import profile from "../../public/austin-neill-hgo1wfpxl3i-unsplash.jpg";
 import notification from "../../public/notification-svgrepo-com.svg";
 import downarrow from "../../public/down-arrow-5-svgrepo-com (1).svg";
-import playlist from "../../public/logo.png";
+import playlist from "../../public/1546.png";
 
 interface PlaylistProp {
   // Define your props here

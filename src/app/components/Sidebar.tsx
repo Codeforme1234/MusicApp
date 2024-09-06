@@ -1,21 +1,27 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 import logo from "../../public/Untitled design (6).png";
-import menu from "../../public/menu-alt-02-svgrepo-com.svg";
+import menu from "../../public/close-circle-svgrepo-com.svg";
 import homeicon from "../../public/home-2-svgrepo-com.svg";
+import download from "../../public/download-svgrepo-com.svg";
+import collection from "../../public/collection-svgrepo-com.svg";
+import discover from "../../public/discover-svgrepo-com.svg";
+import fav from "../../public/heart-svgrepo-com.svg";
+import local from "../../public/files-svgrepo-com.svg";
 
-interface SideProp {
-  // Define your props here
+interface SidebarProps {
+  handleSidebar: () => void;
 }
 
-const Sidebar: React.FC<SideProp> = (props) => {
+const Sidebar: React.FC<SidebarProps> = ({ handleSidebar }) => {
   return (
-    <div className="bg-[#101011] h-full w-full py-8 px-6 pb-10 ">
+    <div className={`bg-[#101011] h-full  py-8 px-6  `}>
       <div className="flex justify-between items-center">
         <Image src={logo} className="h-10 w-10" alt="logo" />
-        <div>
+        <button onClick={handleSidebar}>
           <Image src={menu} alt="menu" />
-        </div>
+        </button>
       </div>
       <div className="mt-6">
         <div>
@@ -25,7 +31,7 @@ const Sidebar: React.FC<SideProp> = (props) => {
           <div className="flex flex-col gap-2">
             <div className="group w-full gap-4 flex items-center">
               <Image
-                src={homeicon}
+                src={discover}
                 className="group-hover:fill-[#2563eb]"
                 alt="icon"
               />
@@ -35,7 +41,7 @@ const Sidebar: React.FC<SideProp> = (props) => {
             </div>
             <div className="group w-full gap-4 flex items-center">
               <Image
-                src={homeicon}
+                src={collection}
                 className="group-hover:fill-[#2563eb]"
                 alt="icon"
               />
@@ -45,7 +51,7 @@ const Sidebar: React.FC<SideProp> = (props) => {
             </div>
             <div className="group w-full gap-4 flex items-center">
               <Image
-                src={homeicon}
+                src={download}
                 className="group-hover:fill-[#2563eb]"
                 alt="icon"
               />
@@ -62,7 +68,7 @@ const Sidebar: React.FC<SideProp> = (props) => {
           <div className="flex flex-col gap-3 whitespace-nowrap">
             <div className="group w-full gap-4 flex items-center">
               <Image
-                src={homeicon}
+                src={fav}
                 className="group-hover:fill-[#2563eb]"
                 alt="icon"
               />
@@ -72,7 +78,7 @@ const Sidebar: React.FC<SideProp> = (props) => {
             </div>
             <div className="group w-full gap-4 flex items-center">
               <Image
-                src={homeicon}
+                src={local}
                 className="group-hover:fill-[#2563eb]"
                 alt="icon"
               />
