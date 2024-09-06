@@ -6,5 +6,7 @@ import Player from "./Player";
 import Sidebar from "./Sidebar";
 import Suggestion from "./Suggestion";
 import CurrentSong from "./CurrentSong";
+import MusicCard from "./MusicCard";
+import SidebarItems from "./SidebarItems";
 
-export { Banner, Center, Nav, PlayList, Player, Sidebar, CurrentSong, Suggestion };
+export { Banner, Center, Nav, PlayList, SidebarItems, MusicCard, Player, Sidebar, CurrentSong, Suggestion };
