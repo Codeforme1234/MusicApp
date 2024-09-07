@@ -19,10 +19,6 @@ const Dashboard = () => {
     setPlay(!play);
   };
 
-  const toggleTheme = () => {
-    setTheme(theme === "day" ? "night" : "day");
-  };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -55,7 +51,11 @@ const Dashboard = () => {
   }
 
   return (
-    <div className={`flex relative h-screen flex-col w-screen overflow-x-clip ${theme === 'day' ? 'bg-white text-black' : 'bg-gray-900 text-white'}`}>
+    <div
+      className={`flex relative h-screen flex-col w-screen overflow-x-clip ${
+        theme === "day" ? "bg-black text-white" : "bg-gray-900 text-white"
+      }`}
+    >
       <div className="flex flex-row w-full h-full">
         <div
           className={`bg-[#101011] h-full lg:block transition-all duration-500 ease-in-out ${
@@ -79,20 +79,20 @@ const Dashboard = () => {
                 Toggle Sidebar
               </div>
             )}
-            <Sidebar
-              handleSidebarClick={handleSidebarClick}
-              handleSidebar={handleSidebar}
-            />
-            <CurrentSong />
+              <Sidebar
+                handleSidebarClick={handleSidebarClick}
+                handleSidebar={handleSidebar}
+              />
+              <CurrentSong />
           </div>
         </div>
         <div
           className={`flex h-screen transition-all duration-500 ease-in-out ${
-            open ? "w-full lg:w-[80%]" : "w-full lg:w-[60%]"
+            open ? "w-full lg:w-[87%]" : "w-full lg:w-[65%]"
           }`}
         >
           <Center
-            theme={theme}
+            // theme={theme}
             handlePlay={handlePlay}
             handleSidebarClick={handleSidebarClick}
             handlePlaylistClick={handlePlaylistClick}
@@ -102,12 +102,12 @@ const Dashboard = () => {
           className={`md:block transition-all duration-500 ease-in-out ${
             openPlaylist
               ? "w-full absolute top-0 right-0 z-50 block"
-              : "lg:w-[20%]"
+              : "lg:w-[27%]"
           }`}
         >
           <div className="flex">
             <PlayList
-              theme={theme}
+              // theme={theme}
               handlePlay={handlePlay}
               handlePlaylistClick={handlePlaylistClick}
             />
@@ -115,16 +115,16 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="absolute bottom-0">
-        <Player play={play} theme={theme} />
+        <Player play={play} />
       </div>
 
       {/* Day/Night Toggle Button */}
-      <button
+      {/* <button
         onClick={toggleTheme}
         className="fixed top-4 right-4 bg-blue-500 text-white p-2 rounded"
       >
         Switch to {theme === "day" ? "Night" : "Day"} Mode
-      </button>
+      </button> */}
     </div>
   );
 };

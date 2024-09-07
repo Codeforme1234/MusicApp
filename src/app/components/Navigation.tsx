@@ -10,10 +10,11 @@ interface PlaylistmenuProps {
     handleSidebarClick: () => void;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
+    theme:string;
   }
-  const Navigation: React.FC<PlaylistmenuProps> = ({ handlePlaylistClick, handleSidebarClick, searchQuery, setSearchQuery }) => {
+  const Navigation: React.FC<PlaylistmenuProps> = ({ handlePlaylistClick, theme, handleSidebarClick, searchQuery, setSearchQuery }) => {
   return (
-    <div className="w-full flex mt-6 gap-6 justify-center items-center">
+    <div className={`w-full ${theme === 'day' ? 'bg-white text-black' : 'bg-[#18191b] text-white'} flex mt-6 gap-6 justify-center items-center`}>
       <div className="w-1/8 flex gap-2 ">
       <div className="lg:block hidden ">
 
