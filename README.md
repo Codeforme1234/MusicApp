@@ -22,7 +22,7 @@ This is a music player web application built using **Next.js** for the frontend,
 To run this project locally:
 
 ```bash
-git clone https://github.com/your-repo/music-player-app.git
-cd music-player-app
+git clone https://github.com/Codeforme1234/musicApp
+cd musicApp
 npm install
 npm run dev
