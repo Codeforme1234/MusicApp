@@ -1,13 +1,15 @@
 import React from 'react'
 
 import Image from 'next/image'
-import { useRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { songState } from '../state/SongAtom'
 const CurrentSong = () => {
-  const currentsong = useRecoilState(songState);
+  const songData = useRecoilValue(songState);
+  const currentSong = songData.currentSong || {};
+  
   return (
     <div className=' w-full mb-[7rem] p-2 flex'>
-        <Image src={currentsong[0].image} width={240} height={240} alt="currentsong"/>
+        <Image src={currentSong.image} width={240} height={240} alt="currentsong"/>
     </div>
   )
 }

@@ -3,12 +3,14 @@ import Image from "next/image";
 import MusicCard from "./MusicCard";
 import { shivers, right, downarrow, notification, profile } from "@/public";
 import useMusicAPI from "../API/FetchMusic"; // Import the API hook
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
+
 interface PlaylistProp {
   handlePlaylistClick: () => void;
   handlePlay: () => void;
 }
+
 interface Playlist {
   id: number;
   name: string;
@@ -21,18 +23,10 @@ interface Song {
   url: string;
 }
 
-
 const Playlist: React.FC<PlaylistProp> = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [songs, setSongs] = useState<Song[]>([]);
-  const setSelectedSong = useSetRecoilState(songState);
-
-
-  const handleMusicCardClick = (song: any) => {
-    setSelectedSong(song); // Update Recoil atom with clicked song details
-    console.log("Selected song:", song); // Log the selected song
-  };
-
+  const [selectedSongs, setSelectedSongs] = useRecoilState(songState);
 
   useMusicAPI({
     onPlaylistsFetched: setPlaylists,
@@ -43,14 +37,14 @@ const Playlist: React.FC<PlaylistProp> = () => {
   });
 
   return (
-    <div className={`bg-[#0a0a0a] h-screen w-full py-8 px-6 pb-10`}>
+    <div className="bg-[#0a0a0a] h-screen w-full py-8 px-6 pb-10">
       <div className="flex justify-between items-center">
         <Image src={profile} className="h-10 w-10 rounded-full" alt="logo" />
         <div>
           <div className="flex gap-2">
             <Image src={notification} alt="notification" />
             <Image src={downarrow} alt="arrow" />
-            <button className="lg:hidden block" >
+            <button className="lg:hidden block">
               <Image src={right} alt="right" />
             </button>
           </div>
@@ -64,7 +58,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
 
       <div className="overflow-scroll no-scrollbar overflow-x-hidden mt-2">
         <div className="flex flex-col text-white h-[200px]">
-          {songs.map((song, index) => (
+        {selectedSongs.playlist.map((song, index) => (
             <MusicCard
               key={index}
               image={song.image}

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { songState } from "../state/SongAtom"; 
 import { shuffle, previous, next, loop, playIcon,device,share, pauseIcon, muteIcon, volumeIcon, likeIcon, heartIcon } from "@/public";
 import Image from "next/image";
@@ -16,7 +16,9 @@ const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
 
-  const [songData, setSongData] = useRecoilState(songState); // Using Recoil state for song data
+  const songData = useRecoilValue(songState); // Using Recoil state for song data
+  const currentSong = songData.currentSong || {};
+  console.log(songData, "sfkajhsfi")
 
   const handleLike = () => setLiked(!liked);
 
@@ -72,11 +74,11 @@ const Player = () => {
 
   return (
     <div className="text-white px-6 w-screen flex opacity-85 items-center py-6 bg-black">
-      <audio ref={audioRef} src={songData?.url || ""} />
+      <audio ref={audioRef} src={currentSong?.url || ""} />
       <div className="flex md:flex-row flex-col md:w-[20%] w-[5%] items-center gap-4">
         <div className="lg:block hidden">
-          <div className="text-sm">{truncateText(songData.title)}</div>
-          <div className="text-xs">{truncateText(songData.artist)}</div>
+          <div className="text-lg">{truncateText(currentSong.title)}</div>
+          <div className="text-sm">{truncateText(currentSong.artist)}</div>
         </div>
         <button onClick={handleLike}>
           <Image src={liked ? likeIcon : heartIcon} alt={liked ? "Liked" : "Like"} />
