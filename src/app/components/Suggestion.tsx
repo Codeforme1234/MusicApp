@@ -10,23 +10,35 @@ interface SuggestionProps {
   handlePlay: () => void;
 }
 
+interface Song {
+  title: string;
+  image: string;
+  artist: string;
+  url: string;
+}
+
+interface Playlist {
+  id: number;
+  name: string;
+}
+
 const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
-  const [songs, setSongs] = useState<any[]>([]); 
-  const [playlists, setPlaylists] = useState<any[]>([]); 
+  const [songs, setSongs] = useState<Song[]>([]); 
+  const [playlists, setPlaylists] = useState<Playlist[]>([]); 
   const [selectedPlaylist, setSelectedPlaylist] = useState<number | null>(null); 
   const [showAllSongs, setShowAllSongs] = useState(false); 
   const [showAllPlaylists, setShowAllPlaylists] = useState(false); 
   const [songData, setSongData] = useRecoilState(songState); 
 
-  const handleSongsFetched = (fetchedSongs: any[]) => {
+  const handleSongsFetched = (fetchedSongs: Song[]) => {
     setSongs(fetchedSongs);
   };
 
-  const handlePlaylistsFetched = (fetchedPlaylists: any[]) => {
+  const handlePlaylistsFetched = (fetchedPlaylists: Playlist[]) => {
     setPlaylists(fetchedPlaylists);
   };
 
-  const handleMusicCardClick = (song: any) => {
+  const handleMusicCardClick = (song: Song) => {
     setSongData(prevState => {
       const updatedPlaylist = prevState.currentSong
         ? [...prevState.playlist, prevState.currentSong]
@@ -35,7 +47,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
       return {
         ...prevState,
         currentSong: song, 
-        playlist: updatedPlaylist, 
+        playlist: updatedPlaylist,
       };
     });
     console.log("Selected song:", song); 
@@ -44,12 +56,12 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
   const handlePlaylistClick = (playlistId: number) => {
     setSelectedPlaylist(playlistId); 
   };
+
   const filteredList = songs.filter((music) =>
     music.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const songsToShow = showAllSongs ? filteredList : filteredList.slice(0, 6);
-
   const playlistsToShow = showAllPlaylists ? playlists : playlists.slice(0, 6);
 
   return (

@@ -1,7 +1,18 @@
 "use client";
 import { atom } from "recoil";
+interface Song {
+  title: string;
+  artist: string;
+  image: string;
+  url: string;
+}
 
-export const songState = atom({
+interface SongState {
+  currentSong: Song | null;
+  playlist: Song[];
+}
+
+export const songState = atom<SongState>({
   key: "songState",
   default: {
     currentSong: {

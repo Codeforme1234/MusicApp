@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import MusicCard from "./MusicCard";
-import { shivers, right, downarrow, notification, profile } from "@/public";
-import useMusicAPI from "../API/FetchMusic"; // Import the API hook
+import { notification, profile, downarrow, right } from "@/public";
+import useMusicAPI from "../API/FetchMusic";
 import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
 
@@ -30,8 +30,8 @@ const Playlist: React.FC<PlaylistProp> = () => {
 
   useMusicAPI({
     onPlaylistsFetched: setPlaylists,
-    onSongsFetched: setSongs, 
-    type: "popular", 
+    onSongsFetched: setSongs,
+    type: "popular",
     page: 1,
     count: 5,
   });
@@ -58,7 +58,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
 
       <div className="overflow-scroll no-scrollbar overflow-x-hidden mt-2">
         <div className="flex flex-col text-white h-[200px]">
-        {selectedSongs.playlist.map((song, index) => (
+          {selectedSongs.playlist.map((song: Song, index: number) => (
             <MusicCard
               key={index}
               image={song.image}
@@ -83,7 +83,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
               image={song.image}
               title={song.title}
               artist={song.artist}
-              timeAgo="Just now"
+              timeAgo="."
             />
           ))}
         </div>
