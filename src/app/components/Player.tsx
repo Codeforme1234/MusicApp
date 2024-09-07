@@ -1,10 +1,28 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
-import { songState } from "../state/SongAtom"; 
-import { shuffle, previous, next, loop, playIcon,device,share, pauseIcon, muteIcon, volumeIcon, likeIcon, heartIcon } from "@/public";
+import { songState } from "../state/SongAtom";
+import {
+  shuffle,
+  previous,
+  next,
+  loop,
+  playIcon,
+  device,
+  share,
+  pauseIcon,
+  muteIcon,
+  volumeIcon,
+  likeIcon,
+  heartIcon,
+} from "@/public";
 import Image from "next/image";
 import { truncateText } from "../Utils/TruncateText";
+interface Song {
+  url: string;
+  title: string;
+  artist: string;
+}
 
 const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -16,9 +34,12 @@ const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
 
-  const songData = useRecoilValue(songState); // Using Recoil state for song data
-  const currentSong = songData.currentSong || {};
-  console.log(songData, "sfkajhsfi")
+  const songData = useRecoilValue(songState);
+  const currentSong: Song = songData.currentSong || {
+    url: "",
+    title: "",
+    artist: "",
+  };
 
   const handleLike = () => setLiked(!liked);
 
@@ -70,7 +91,9 @@ const Player = () => {
   };
 
   const formatTime = (time: number) =>
-    `${Math.floor(time / 60)}:${Math.floor(time % 60).toString().padStart(2, "0")}`;
+    `${Math.floor(time / 60)}:${Math.floor(time % 60)
+      .toString()
+      .padStart(2, "0")}`;
 
   return (
     <div className="text-white px-6 w-screen flex opacity-85 items-center py-6 bg-black">
@@ -81,7 +104,10 @@ const Player = () => {
           <div className="text-sm">{truncateText(currentSong.artist)}</div>
         </div>
         <button onClick={handleLike}>
-          <Image src={liked ? likeIcon : heartIcon} alt={liked ? "Liked" : "Like"} />
+          <Image
+            src={liked ? likeIcon : heartIcon}
+            alt={liked ? "Liked" : "Like"}
+          />
         </button>
       </div>
       <div className="lg:w-[60%] w-full flex flex-col">
@@ -121,7 +147,11 @@ const Player = () => {
       </div>
       <div className="md:w-[20%] flex text-lg items-center gap-4">
         <button onClick={handleMute}>
-          <Image src={isMuted ? muteIcon : volumeIcon} alt="Volume/Mute" className="w-[40px]" />
+          <Image
+            src={isMuted ? muteIcon : volumeIcon}
+            alt="Volume/Mute"
+            className="w-[40px]"
+          />
         </button>
         <input
           type="range"
