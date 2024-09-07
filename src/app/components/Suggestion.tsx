@@ -23,6 +23,10 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
     setSongs(fetchedSongs);
   };
 
+ async function getRandomImage(text:string){
+  
+ }
+
   // Callback to handle playlists fetched from API
   const handlePlaylistsFetched = (fetchedPlaylists: any[]) => {
     setPlaylists(fetchedPlaylists);
