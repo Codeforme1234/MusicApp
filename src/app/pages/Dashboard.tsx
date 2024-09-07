@@ -113,14 +113,6 @@ const Dashboard = () => {
       <div className="absolute bottom-0">
         <Player  />
       </div>
-
-      {/* Day/Night Toggle Button */}
-      {/* <button
-        onClick={toggleTheme}
-        className="fixed top-4 right-4 bg-blue-500 text-white p-2 rounded"
-      >
-        Switch to {theme === "day" ? "Night" : "Day"} Mode
-      </button> */}
     </div>
   );
 };

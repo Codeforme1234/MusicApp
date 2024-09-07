@@ -19,9 +19,9 @@ const MusicCard: React.FC<MusicItemProps> = ({ image, title, artist, description
       <div className={`relative rounded-lg group ${timeAgo ? 'flex items-center w-12':''}`}>
         <Image className={` aspect-square  overflow-hidden object-fill ${timeAgo ? 'h-10 w-10 rounded-sm':'rounded-xl'}`} height={200} width={200} src={image} alt={title} />
         <button 
-            className={`absolute cursor-pointer inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out rounded-xl`}
+            className={`absolute cursor-pointer inset-0 flex justify-start bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 pt-3 pl-3 transition-opacity duration-300 ease-in-out rounded-xl`}
           >
-            <Image src={playbtn} alt="Play" className={` ${timeAgo ? 'h-3 w-3' :'h-10 w-10'}`} />
+            <Image src={playbtn} alt="Play" className={` text-green-600 ${timeAgo ? 'h-3 w-3' :'h-10 w-10'}`} />
           </button>
       </div>
       <div className="flex flex-col">

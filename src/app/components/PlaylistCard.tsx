@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image'; // Assuming you're using Next.js for the Image component
-import { fetchPixabayImageURL } from '../API/ImageApi';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { fetchPixabayImageURL } from "../API/ImageApi";
 
 interface Props {
   title: string;
@@ -15,7 +15,6 @@ const PlaylistCard: React.FC<Props> = (props) => {
       if (data) {
         setImageUrl(data);
       } else {
-        // Generate a random number to get a unique image from Picsum
         setImageUrl(`https://picsum.photos/240/240?random=${Math.random()}`);
       }
     }
@@ -25,7 +24,7 @@ const PlaylistCard: React.FC<Props> = (props) => {
 
   return (
     <div className="flex-1 justify-center">
-      <div className="h-[12rem] rounded-lg aspect-square">
+      <div className="h-[12rem] rounded-lg aspect-square cursor-pointer">
         {imageUrl && (
           <Image
             className="aspect-square object-cover"

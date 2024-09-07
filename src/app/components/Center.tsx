@@ -24,7 +24,7 @@ const Center: React.FC<PlaylistProps> = ({
       <div className="overflow-scroll no-scrollbar overflow-x-hidden">
         <div className="h-[80%]">
           <Banner />
-          <Suggestion handlePlay={handlePlay} searchQuery={searchQuery} />
+          <Suggestion searchQuery={searchQuery} />
         </div>
       </div>
     </div>

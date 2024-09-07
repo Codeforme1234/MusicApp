@@ -1,13 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { MusicCard, PlaylistCard } from "../components";
-import APIComponent from "../API/FetchMusic";
+import useMusicAPI from "../API/FetchMusic";
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
 
 interface SuggestionProps {
   searchQuery: string;
-  handlePlay: () => void;
 }
 
 interface Song {
@@ -22,40 +21,38 @@ interface Playlist {
   name: string;
 }
 
-const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
-  const [songs, setSongs] = useState<Song[]>([]); 
-  const [playlists, setPlaylists] = useState<Playlist[]>([]); 
-  const [selectedPlaylist, setSelectedPlaylist] = useState<number | null>(null); 
-  const [showAllSongs, setShowAllSongs] = useState(false); 
-  const [showAllPlaylists, setShowAllPlaylists] = useState(false); 
-  const [songData, setSongData] = useRecoilState(songState); 
-
-  const handleSongsFetched = (fetchedSongs: Song[]) => {
-    setSongs(fetchedSongs);
-  };
-
-  const handlePlaylistsFetched = (fetchedPlaylists: Playlist[]) => {
-    setPlaylists(fetchedPlaylists);
-  };
+const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<number | null>(null);
+  const [showAllSongs, setShowAllSongs] = useState(false);
+  const [showAllPlaylists, setShowAllPlaylists] = useState(false);
+  const [songData, setSongData] = useRecoilState(songState);
 
   const handleMusicCardClick = (song: Song) => {
-    setSongData(prevState => {
+    setSongData((prevState) => {
       const updatedPlaylist = prevState.currentSong
         ? [...prevState.playlist, prevState.currentSong]
         : prevState.playlist;
 
       return {
         ...prevState,
-        currentSong: song, 
+        currentSong: song,
         playlist: updatedPlaylist,
       };
     });
-    console.log("Selected song:", song); 
+    console.log("Selected song:", song);
   };
 
   const handlePlaylistClick = (playlistId: number) => {
-    setSelectedPlaylist(playlistId); 
+    setSelectedPlaylist(playlistId);
   };
+
+  const { loading } = useMusicAPI({
+    onPlaylistsFetched: setPlaylists,
+    onSongsFetched: setSongs,
+    selectedPlaylist: playlists.find((p) => p.id === selectedPlaylist) || null,
+  });
 
   const filteredList = songs.filter((music) =>
     music.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -66,15 +63,14 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
 
   return (
     <div className="mt-6 pb-20">
-      <APIComponent
-        onSongsFetched={handleSongsFetched}
-        onPlaylistsFetched={handlePlaylistsFetched}
-      />
-
-      <div className="">
-        <div>
+      {/* Loading state */}
+      {loading ? (
+        <div className="text-white">Loading...</div>
+      ) : (
+        <>
+          {/* Playlists Section */}
           <div className="flex justify-between items-end">
-            <h1 className="text-white text-2xl font-bold">Hello, Woilon</h1>
+            <h1 className="text-white text-2xl font-bold">Hello, Devesh</h1>
             <button
               className="text-gray-400 text-sm font-semibold"
               onClick={() => setShowAllPlaylists(!showAllPlaylists)}
@@ -96,14 +92,13 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
             </div>
           </div>
 
+          {/* Songs Section */}
           <div>
             <div className="flex justify-between items-end mt-8">
-              <h1 className="text-white text-xl font-bold">
-                New releases for you
-              </h1>
+              <h1 className="text-white text-xl font-bold">New releases for you</h1>
               <button
                 className="text-gray-400 text-sm font-semibold"
-                onClick={() => setShowAllSongs(!showAllSongs)} 
+                onClick={() => setShowAllSongs(!showAllSongs)}
               >
                 {showAllSongs ? "Show less" : "See all"}
               </button>
@@ -114,15 +109,15 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
                 <div
                   key={index}
                   className="flex-shrink-0 md:w-52 w-40"
-                  onClick={() => handleMusicCardClick(music)} 
+                  onClick={() => handleMusicCardClick(music)}
                 >
                   <MusicCard {...music} />
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

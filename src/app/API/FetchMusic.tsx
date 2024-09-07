@@ -83,7 +83,7 @@ const useMusicAPI = ({
     fetchSongs(); // Fetch songs when a type or playlist is selected
   }, [selectedPlaylist, type, page, count]);
 
-  return "";
+  return { loading };
 };
 
 export default useMusicAPI;
