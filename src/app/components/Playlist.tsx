@@ -6,13 +6,10 @@ import downarrow from "../../public/down-arrow-5-svgrepo-com (1).svg";
 import MusicCard from "./MusicCard";
 import right from "../../public/right-2-svgrepo-com.svg";
 import shivers from "../../public/ed-sheeran-shivers-video.jpg";
-import APIComponent from "../API/FetchMusic";
-import { songState } from "../state/SongAtom";
-import { useSetRecoilState } from "recoil";
 
 interface PlaylistProp {
   handlePlaylistClick: () => void;
-  handlePlay: () => void;
+  handlePlay:() => void;
 }
 
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -32,19 +29,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return array;
 };
 
-const Playlist: React.FC<PlaylistProp> = ({
-  handlePlaylistClick,
-  handlePlay,
-}) => {
-  const [songs, setSongs] = React.useState<any[]>([]);
-  const setSelectedSong = useSetRecoilState(songState); 
-
-  const handleSongsFetched = (fetchedSongs: any[]) => {
-    setSongs(fetchedSongs);
-  };
-  const handleMusicCardClick = (song: any) => {
-    setSelectedSong(song); 
-    console.log("Selected song:", song); 
+const Playlist: React.FC<PlaylistProp> = ({ handlePlaylistClick, handlePlay }) => {
   const recentlyPlayed = [
     {
       image:

@@ -8,5 +8,6 @@ import Suggestion from "./Suggestion";
 import CurrentSong from "./CurrentSong";
 import MusicCard from "./MusicCard";
 import SidebarItems from "./SidebarItems";
+import PlaylistCard from "./PlaylistCard";
 
-export { Banner, Center, Navigation, PlayList, SidebarItems, MusicCard, Player, Sidebar, CurrentSong, Suggestion };
+export { Banner, Center, Navigation, PlaylistCard, PlayList, SidebarItems, MusicCard, Player, Sidebar, CurrentSong, Suggestion };
