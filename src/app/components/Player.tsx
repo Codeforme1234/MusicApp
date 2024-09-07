@@ -1,17 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
-import { songState } from "../state/SongAtom"; // Adjust the path to your Recoil atom
-import shuffle from "../../public/shuffle-2-svgrepo-com.svg";
-import previous from "../../public/previous-svgrepo-com.svg";
-import next from "../../public/next-svgrepo-com (1).svg";
-import loop from "../../public/loop-svgrepo-com.svg";
-import playIcon from "../../public/play-circle-svgrepo-com.svg";
-import pauseIcon from "../../public/pause-circle-svgrepo-com.svg";
-import muteIcon from "../../public/mute-svgrepo-com.svg";
-import volumeIcon from "../../public/speaker-2-svgrepo-com.svg";
-import likeIcon from "../../public/heart-shine-svgrepo-com.svg";
-import heartIcon from "../../public/heart-svgrepo-com.svg";
+import { songState } from "../state/SongAtom"; 
+import { shuffle, previous, next, loop, playIcon, pauseIcon, muteIcon, volumeIcon, likeIcon, heartIcon } from "@/public";
 import Image from "next/image";
 
 const Player = () => {

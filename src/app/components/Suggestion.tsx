@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import MusicCard from "./MusicCard";
+import { MusicCard, PlaylistCard } from "../components";
 import APIComponent from "../API/FetchMusic";
 import { songState } from "../state/SongAtom";
 import { useSetRecoilState } from "recoil";
-import PlaylistCard from "./PlaylistCard";
 
 interface SuggestionProps {
   searchQuery: string;
@@ -62,16 +61,15 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
           <div className="flex justify-between items-end">
             <h1 className="text-white text-2xl font-bold">Hello, Woilon</h1>
             <button
-                className="text-gray-400 text-sm font-semibold"
-                onClick={() => setShowAllPlaylists(!showAllPlaylists)} // Toggle between showing all playlists and limiting to 6
-              >
-                {showAllPlaylists ? "Show less" : "See all"}
-              </button>
+              className="text-gray-400 text-sm font-semibold"
+              onClick={() => setShowAllPlaylists(!showAllPlaylists)} // Toggle between showing all playlists and limiting to 6
+            >
+              {showAllPlaylists ? "Show less" : "See all"}
+            </button>
           </div>
 
           {/* Playlist Section */}
           <div className="text-white mt-4">
-           
             <div className="overflow-x-auto space-x-4 flex gap-4 no-scrollbar">
               {playlistsToShow.map((playlist, index) => (
                 <button

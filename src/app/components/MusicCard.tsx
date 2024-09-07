@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
-import playbtn from '../../public/play-button-svgrepo-com.svg'
+import { playbtn } from "@/public";
 
 interface MusicItemProps {
   image: StaticImageData | string;

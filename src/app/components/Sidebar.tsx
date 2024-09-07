@@ -1,22 +1,27 @@
-'use client';
+"use client";
 import React from "react";
 import Image from "next/image";
-import logo from "../../public/Untitled design (6).png";
-import homeicon from "../../public/home-2-svgrepo-com.svg";
-import download from "../../public/download-svgrepo-com.svg";
-import collection from '../../public/collection-svgrepo-com.svg';
-import discover from '../../public/discover-svgrepo-com.svg';
-import fav from '../../public/heart-svgrepo-com.svg';
-import local from "../../public/files-svgrepo-com.svg";
-import left from "../../public/left-2-svgrepo-com.svg";
+import {
+  logo,
+  homeicon,
+  download,
+  collection,
+  discover,
+  fav,
+  local,
+  left,
+} from "@/public";
 import SidebarItems from "./SidebarItems";
 
 interface SidebarProps {
   handleSidebar: () => void;
-  handleSidebarClick:()=>void;
+  handleSidebarClick: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ handleSidebar, handleSidebarClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  handleSidebar,
+  handleSidebarClick,
+}) => {
   const featuresItems = [
     { icon: homeicon, label: "Home" },
     { icon: discover, label: "Discover" },

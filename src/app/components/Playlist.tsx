@@ -1,11 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import profile from "../../public/austin-neill-hgo1wfpxl3i-unsplash.jpg";
-import notification from "../../public/notification-svgrepo-com.svg";
-import downarrow from "../../public/down-arrow-5-svgrepo-com (1).svg";
 import MusicCard from "./MusicCard";
-import right from "../../public/right-2-svgrepo-com.svg";
-import shivers from "../../public/ed-sheeran-shivers-video.jpg";
+import { shivers, right, downarrow, notification, profile } from "@/public";
 
 interface PlaylistProp {
   handlePlaylistClick: () => void;
