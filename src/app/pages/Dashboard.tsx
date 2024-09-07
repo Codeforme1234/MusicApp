@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [openSidebar, setSidebar] = useState(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState("day");
+  
 
   const handlePlay = () => {
     setPlay(!play);
@@ -52,9 +52,7 @@ const Dashboard = () => {
 
   return (
     <div
-      className={`flex relative h-screen flex-col overflow-hidden w-screen overflow-x-clip ${
-        theme === "day" ? "bg-black text-white" : "bg-gray-900 text-white"
-      }`}
+      className={`flex relative h-screen flex-col overflow-hidden w-screen overflow-x-clip `}
     >
       <div className="flex flex-row w-full h-full">
         <div
@@ -92,7 +90,6 @@ const Dashboard = () => {
           }`}
         >
           <Center
-            // theme={theme}
             handlePlay={handlePlay}
             handleSidebarClick={handleSidebarClick}
             handlePlaylistClick={handlePlaylistClick}
@@ -107,7 +104,6 @@ const Dashboard = () => {
         >
           <div className="flex">
             <PlayList
-              // theme={theme}
               handlePlay={handlePlay}
               handlePlaylistClick={handlePlaylistClick}
             />
