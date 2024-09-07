@@ -52,7 +52,7 @@ const Dashboard = () => {
 
   return (
     <div
-      className={`flex relative h-screen flex-col w-screen overflow-x-clip ${
+      className={`flex relative h-screen flex-col overflow-hidden w-screen overflow-x-clip ${
         theme === "day" ? "bg-black text-white" : "bg-gray-900 text-white"
       }`}
     >
@@ -115,7 +115,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="absolute bottom-0">
-        <Player play={play} />
+        <Player  />
       </div>
 
       {/* Day/Night Toggle Button */}

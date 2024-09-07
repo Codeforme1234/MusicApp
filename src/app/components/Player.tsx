@@ -2,8 +2,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom"; 
-import { shuffle, previous, next, loop, playIcon, pauseIcon, muteIcon, volumeIcon, likeIcon, heartIcon } from "@/public";
+import { shuffle, previous, next, loop, playIcon,device,share, pauseIcon, muteIcon, volumeIcon, likeIcon, heartIcon } from "@/public";
 import Image from "next/image";
+import { truncateText } from "../Utils/TruncateText";
 
 const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -70,12 +71,12 @@ const Player = () => {
     `${Math.floor(time / 60)}:${Math.floor(time % 60).toString().padStart(2, "0")}`;
 
   return (
-    <div className="text-white px-6 w-screen flex items-center py-6 bg-black">
+    <div className="text-white px-6 w-screen flex opacity-85 items-center py-6 bg-black">
       <audio ref={audioRef} src={songData?.url || ""} />
       <div className="flex md:flex-row flex-col md:w-[20%] w-[5%] items-center gap-4">
         <div className="lg:block hidden">
-          <div>{songData.title}</div>
-          <div>{songData.artist}</div>
+          <div className="text-sm">{truncateText(songData.title)}</div>
+          <div className="text-xs">{truncateText(songData.artist)}</div>
         </div>
         <button onClick={handleLike}>
           <Image src={liked ? likeIcon : heartIcon} alt={liked ? "Liked" : "Like"} />
@@ -116,9 +117,9 @@ const Player = () => {
           </div>
         </div>
       </div>
-      <div className="md:w-[20%] flex items-center gap-4">
+      <div className="md:w-[20%] flex text-lg items-center gap-4">
         <button onClick={handleMute}>
-          <Image src={isMuted ? muteIcon : volumeIcon} alt="Volume/Mute" />
+          <Image src={isMuted ? muteIcon : volumeIcon} alt="Volume/Mute" className="w-[40px]" />
         </button>
         <input
           type="range"
@@ -129,6 +130,28 @@ const Player = () => {
           onChange={handleVolumeChange}
           className="w-full"
         />
+        <div className="lg:block hidden w-[40px]">
+          <svg
+            width="25px"
+            height="25px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 4.5C10.314 4.5 9 5.80455 9 7.35V12.15C9 13.6955 10.314 15 12 15C13.686 15 15 13.6955 15 12.15L15 7.35C15 5.80455 13.686 4.5 12 4.5ZM7.5 7.35C7.5 4.919 9.54387 3 12 3C14.4561 3 16.5 4.919 16.5 7.35L16.5 12.15C16.5 14.581 14.4561 16.5 12 16.5C9.54387 16.5 7.5 14.581 7.5 12.15V7.35ZM6.75 12.75C6.75 15.1443 9.0033 17.25 12 17.25C14.9967 17.25 17.25 15.1443 17.25 12.75H18.75C18.75 15.9176 16.0499 18.3847 12.75 18.7129V21H11.25V18.7129C7.95007 18.3847 5.25 15.9176 5.25 12.75H6.75Z"
+              fill="#FFF"
+            />
+          </svg>
+        </div>
+        <div className="lg:block hidden w-[40px]">
+          <Image src={device} alt="device" />
+        </div>
+        <div className="lg:block hidden w-[40px]">
+          <Image src={share} alt="device" />
+        </div>
       </div>
     </div>
   );

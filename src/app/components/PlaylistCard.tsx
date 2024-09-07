@@ -12,8 +12,12 @@ const PlaylistCard: React.FC<Props> = (props) => {
   useEffect(() => {
     async function fetchImage() {
       const data = await fetchPixabayImageURL(props.title);
-      if(data) setImageUrl(data);
-      else setImageUrl("https://picsum.photos/240/240");
+      if (data) {
+        setImageUrl(data);
+      } else {
+        // Generate a random number to get a unique image from Picsum
+        setImageUrl(`https://picsum.photos/240/240?random=${Math.random()}`);
+      }
     }
 
     fetchImage();

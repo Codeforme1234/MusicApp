@@ -21,14 +21,14 @@ interface APIComponentProps {
   count?: number; // Number of items per page
 }
 
-const APIComponent: React.FC<APIComponentProps> = ({
+const useMusicAPI = ({
   onPlaylistsFetched,
   onSongsFetched,
   selectedPlaylist,
   type = "", // Default empty, will fetch general feed
   page = 1,
   count = 5,
-}) => {
+}: APIComponentProps) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch playlists (Categories in this case)
@@ -40,7 +40,6 @@ const APIComponent: React.FC<APIComponentProps> = ({
         id: playlist.id,
         name: playlist.name,
       }));
-      console.log(fetchPlaylists);
       onPlaylistsFetched(fetchedPlaylists); // Pass playlists to parent
     } catch (error) {
       console.error("Error fetching playlists:", error);
@@ -84,7 +83,7 @@ const APIComponent: React.FC<APIComponentProps> = ({
     fetchSongs(); // Fetch songs when a type or playlist is selected
   }, [selectedPlaylist, type, page, count]);
 
-  return null; // No UI
+  return "";
 };
 
-export default APIComponent;
+export default useMusicAPI;

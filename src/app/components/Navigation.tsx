@@ -3,29 +3,20 @@ import Image from "next/image";
 import { right, left, dots, menu } from "@/public";
 
 interface PlaylistmenuProps {
-  handlePlaylistClick: () => void;
-  handleSidebarClick: () => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  theme: string;
-}
-const Navigation: React.FC<PlaylistmenuProps> = ({
-  handlePlaylistClick,
-  theme,
-  handleSidebarClick,
-  searchQuery,
-  setSearchQuery,
-}) => {
+    handlePlaylistClick: () => void;
+    handleSidebarClick: () => void;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
+    theme:string;
+  }
+  const Navigation: React.FC<PlaylistmenuProps> = ({ handlePlaylistClick, theme, handleSidebarClick, searchQuery, setSearchQuery }) => {
   return (
-    <div
-      className={`w-full ${
-        theme === "day" ? "bg-white text-black" : "bg-[#18191b] text-white"
-      } flex mt-6 gap-6 justify-center items-center`}
-    >
+    <div className={`w-full ${theme === 'day' ? 'bg-white text-black' : 'bg-[#18191b] text-white'} flex mt-6 gap-6 justify-center items-center`}>
       <div className="w-1/8 flex gap-2 ">
-        <div className="lg:block hidden ">
-          <Image src={left} alt="left" />{" "}
-        </div>
+      <div className="lg:block hidden ">
+
+      <Image  src={left} alt="left" />{" "}
+      </div>
         <button className="lg:hidden block" onClick={handleSidebarClick}>
           <Image src={left} alt="left" />{" "}
         </button>
@@ -62,13 +53,8 @@ const Navigation: React.FC<PlaylistmenuProps> = ({
           </button>
         </div>
       </div>
-      <button className="w-1/8 lg:block hidden">
-        {" "}
-        <Image src={dots} alt="menu" />{" "}
-      </button>
-      <button onClick={handlePlaylistClick} className="w-1/8 lg:hidden block">
-        <Image src={menu} alt="menu" />{" "}
-      </button>
+      <button  className="w-1/8 lg:block hidden"> <Image src={dots} alt="menu"/> </button>
+      <button  onClick={handlePlaylistClick} className="w-1/8 lg:hidden block"><Image src={menu}  alt="menu"/>  </button>
     </div>
   );
 };

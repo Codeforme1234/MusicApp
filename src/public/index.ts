@@ -1,9 +1,9 @@
 import right from "./right-2-svgrepo-com.svg";
 import logo from "./Untitled design (6).png";
-import banner1 from "./maxresdefault.jpg";
-import banner2 from "./maxresdefault (2).jpg";
-import banner3 from "./istock_000043549038_medium_wide-e825e6a2a49bc79f4d924300a48eba1cb39d21d8-s1400-c100.jpg";
-import banner4 from "./dua-lipa-1920-x-1080-background-6zkgnpg786cvcz7c.jpg";
+import banner1 from "./banner1.avif";
+import banner2 from "./banner2.avif";
+import banner3 from "./banner3.avif";
+import banner4 from "./banner4.avif";
 import playbtn from "./play-button-svgrepo-com.svg";
 import left from "./left-2-svgrepo-com.svg";
 import dots from "./dots-horizontal-svgrepo-com.svg";
@@ -28,9 +28,13 @@ import collection from "./collection-svgrepo-com.svg";
 import discover from "./discover-svgrepo-com.svg";
 import fav from "./heart-svgrepo-com.svg";
 import local from "./files-svgrepo-com.svg";
+import device from "./device-multiple-svgrepo-com.svg";
+import share from "./share-svgrepo-com.svg";
 
 export {
   right,
+  device,
+  share,
   logo,
   banner1,
   banner2,

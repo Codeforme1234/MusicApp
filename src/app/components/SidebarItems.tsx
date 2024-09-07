@@ -9,7 +9,7 @@ interface SidebarItemsProps {
 const SidebarItems: React.FC<SidebarItemsProps> = ({ title, items }) => {
   return (
     <div className="mt-6">
-      <h4 className="uppercase text-gray-400 font-semibold text-sm py-1">
+      <h4 className="uppercase text-gray-400 font-semibold text-xs py-1">
         {title}
       </h4>
       <div className="flex flex-col mt-2 gap-2">
@@ -20,7 +20,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ title, items }) => {
               className="group-hover:fill-[#2563eb]"
               alt="icon"
             />
-            <h4 className="text-gray-300 font-medium text-lg group-hover:text-blue-600">
+            <h4 className="text-gray-300 font-medium text-sm group-hover:text-blue-600">
               {item.label}
             </h4>
           </div>

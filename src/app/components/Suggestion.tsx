@@ -23,10 +23,6 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
     setSongs(fetchedSongs);
   };
 
- async function getRandomImage(text:string){
-  
- }
-
   // Callback to handle playlists fetched from API
   const handlePlaylistsFetched = (fetchedPlaylists: any[]) => {
     setPlaylists(fetchedPlaylists);
@@ -107,7 +103,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
                   className="flex-shrink-0 md:w-52 w-40"
                   onClick={() => handleMusicCardClick(music)} // Handle click
                 >
-                  <MusicCard {...music} handlePlay={handlePlay} />
+                  <MusicCard {...music}  />
                 </div>
               ))}
             </div>
@@ -133,7 +129,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery, handlePlay }) => {
                   className="flex-shrink-0 md:w-52 w-40"
                   onClick={() => handleMusicCardClick(music)} // Handle click
                 >
-                  <MusicCard {...music} handlePlay={handlePlay} />
+                  <MusicCard {...music} />
                 </div>
               ))}
             </div>
