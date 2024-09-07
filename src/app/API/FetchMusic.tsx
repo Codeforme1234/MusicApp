@@ -13,25 +13,24 @@ interface Song {
 }
 
 interface APIComponentProps {
-  onPlaylistsFetched: (playlists: Playlist[]) => void; // Callback to send playlists to parent
-  onSongsFetched: (songs: Song[]) => void; // Callback to send songs back to parent
-  selectedPlaylist?: Playlist | null; // Selected playlist to fetch songs
-  type?: string; // Type: "popular" or "new"
-  page?: number; // Page number for pagination
-  count?: number; // Number of items per page
+  onPlaylistsFetched: (playlists: Playlist[]) => void; 
+  onSongsFetched: (songs: Song[]) => void;
+  selectedPlaylist?: Playlist | null; 
+  type?: string; 
+  page?: number; 
+  count?: number; 
 }
 
 const useMusicAPI = ({
   onPlaylistsFetched,
   onSongsFetched,
   selectedPlaylist,
-  type = "", // Default empty, will fetch general feed
+  type = "",
   page = 1,
   count = 5,
 }: APIComponentProps) => {
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch playlists (Categories in this case)
   const fetchPlaylists = async () => {
     try {
       const response = await fetch(`https://api-v2.hearthis.at/categories/`);
@@ -40,7 +39,7 @@ const useMusicAPI = ({
         id: playlist.id,
         name: playlist.name,
       }));
-      onPlaylistsFetched(fetchedPlaylists); // Pass playlists to parent
+      onPlaylistsFetched(fetchedPlaylists); 
     } catch (error) {
       console.error("Error fetching playlists:", error);
     } finally {
@@ -48,7 +47,6 @@ const useMusicAPI = ({
     }
   };
 
-  // Fetch songs based on feed type (popular/new) or selected playlist
   const fetchSongs = async () => {
     setLoading(true);
     let url = `https://api-v2.hearthis.at/feed/?page=${page}&count=${count}`;
@@ -67,7 +65,7 @@ const useMusicAPI = ({
         image: song.artwork_url,
         url: song.stream_url,
       }));
-      onSongsFetched(fetchedSongs); // Pass songs to parent component
+      onSongsFetched(fetchedSongs); 
     } catch (error) {
       console.error("Error fetching songs:", error);
     } finally {
@@ -76,11 +74,11 @@ const useMusicAPI = ({
   };
 
   useEffect(() => {
-    fetchPlaylists(); // Fetch playlists (categories) on mount
+    fetchPlaylists(); 
   }, []);
 
   useEffect(() => {
-    fetchSongs(); // Fetch songs when a type or playlist is selected
+    fetchSongs(); 
   }, [selectedPlaylist, type, page, count]);
 
   return { loading };

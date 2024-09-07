@@ -7,8 +7,6 @@ import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
 
 interface PlaylistProp {
-  handlePlaylistClick: () => void;
-  handlePlay: () => void;
 }
 
 interface Playlist {

@@ -13,7 +13,6 @@ const Dashboard = () => {
   const [openSidebar, setSidebar] = useState(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
-  
 
   const handlePlay = () => {
     setPlay(!play);
@@ -77,11 +76,11 @@ const Dashboard = () => {
                 Toggle Sidebar
               </div>
             )}
-              <Sidebar
-                handleSidebarClick={handleSidebarClick}
-                handleSidebar={handleSidebar}
-              />
-              <CurrentSong />
+            <Sidebar
+              handleSidebarClick={handleSidebarClick}
+              handleSidebar={handleSidebar}
+            />
+            <CurrentSong />
           </div>
         </div>
         <div
@@ -89,11 +88,7 @@ const Dashboard = () => {
             open ? "w-full lg:w-[87%]" : "w-full lg:w-[65%]"
           }`}
         >
-          <Center
-            handlePlay={handlePlay}
-            handleSidebarClick={handleSidebarClick}
-            handlePlaylistClick={handlePlaylistClick}
-          />
+          <Center />
         </div>
         <div
           className={`md:block transition-all duration-500 ease-in-out ${
@@ -103,15 +98,12 @@ const Dashboard = () => {
           }`}
         >
           <div className="flex">
-            <PlayList
-              handlePlay={handlePlay}
-              handlePlaylistClick={handlePlaylistClick}
-            />
+            <PlayList />
           </div>
         </div>
       </div>
       <div className="absolute bottom-0">
-        <Player  />
+        <Player />
       </div>
     </div>
   );

@@ -2,25 +2,15 @@ import React from "react";
 import Image from "next/image";
 import { right, left, dots, menu } from "@/public";
 
-interface PlaylistmenuProps {
-  handlePlaylistClick: () => void;
-  handleSidebarClick: () => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
-const Navigation: React.FC<PlaylistmenuProps> = ({
-  handlePlaylistClick,
-  handleSidebarClick,
-  searchQuery,
-  setSearchQuery,
-}) => {
+interface PlaylistmenuProps {}
+const Navigation: React.FC<PlaylistmenuProps> = ({}) => {
   return (
     <div className={`w-full flex mt-6 gap-6 justify-center items-center`}>
       <div className="w-1/8 flex gap-2 ">
         <div className="lg:block hidden ">
           <Image src={left} alt="left" />{" "}
         </div>
-        <button className="lg:hidden block" onClick={handleSidebarClick}>
+        <button className="lg:hidden block">
           <Image src={left} alt="left" />{" "}
         </button>
         <div>
@@ -32,8 +22,6 @@ const Navigation: React.FC<PlaylistmenuProps> = ({
         <div className="relative py-3  rounded-3xl w-full max-w-4xl">
           <input
             type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
             className="rounded-3xl p-3 w-full text-black placeholder:w-[80%] md:placeholder:w-full"
             placeholder="Search for artist, songs or albums"
           />
@@ -60,7 +48,7 @@ const Navigation: React.FC<PlaylistmenuProps> = ({
         {" "}
         <Image src={dots} alt="menu" />{" "}
       </button>
-      <button onClick={handlePlaylistClick} className="w-1/8 lg:hidden block">
+      <button className="w-1/8 lg:hidden block">
         <Image src={menu} alt="menu" />{" "}
       </button>
     </div>

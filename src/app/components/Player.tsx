@@ -18,6 +18,7 @@ import {
 } from "@/public";
 import Image from "next/image";
 import { truncateText } from "../Utils/TruncateText";
+
 interface Song {
   url: string;
   title: string;
@@ -25,7 +26,7 @@ interface Song {
 }
 
 const Player = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(0.2);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -61,12 +62,18 @@ const Player = () => {
       audioRef.current.addEventListener("loadedmetadata", updateDuration);
       audioRef.current.addEventListener("timeupdate", updateCurrentTime);
 
+      // Automatically play the song when the component mounts
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((error) => console.error("Error playing audio:", error));
+
       return () => {
         audioRef.current?.removeEventListener("loadedmetadata", updateDuration);
         audioRef.current?.removeEventListener("timeupdate", updateCurrentTime);
       };
     }
-  }, []);
+  }, [currentSong.url]); 
 
   const handlePlayPause = () => {
     if (audioRef.current) {

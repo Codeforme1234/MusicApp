@@ -4,21 +4,9 @@ import { MusicCard, PlaylistCard } from "../components";
 import useMusicAPI from "../API/FetchMusic";
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
-
+import { Song, Playlist } from "../Utils/interfaces";
 interface SuggestionProps {
   searchQuery: string;
-}
-
-interface Song {
-  title: string;
-  image: string;
-  artist: string;
-  url: string;
-}
-
-interface Playlist {
-  id: number;
-  name: string;
 }
 
 const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
@@ -95,7 +83,9 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
           {/* Songs Section */}
           <div>
             <div className="flex justify-between items-end mt-8">
-              <h1 className="text-white text-xl font-bold">New releases for you</h1>
+              <h1 className="text-white text-xl font-bold">
+                New releases for you
+              </h1>
               <button
                 className="text-gray-400 text-sm font-semibold"
                 onClick={() => setShowAllSongs(!showAllSongs)}
