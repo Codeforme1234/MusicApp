@@ -24,7 +24,7 @@ const PlaylistCard: React.FC<Props> = (props) => {
 
   return (
     <div className="flex-1 justify-center">
-      <div className="h-[12rem] rounded-lg aspect-square cursor-pointer">
+      <div className="h-[12rem] rounded-lg aspect-square">
         {imageUrl && (
           <Image
             className="aspect-square object-cover"

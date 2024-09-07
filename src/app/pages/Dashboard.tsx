@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Sidebar, PlayList, Player, Center, CurrentSong } from "../components";
-import openmenu from "../../public/open-line-svgrepo-com.svg";
 import Image from "next/image";
 import right from "../../public/right-2-svgrepo-com.svg";
 import logo from "../../public/Untitled design (6).png";
+import SongStateManager from "../Utils/LocalStorage";
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
@@ -53,6 +53,7 @@ const Dashboard = () => {
     <div
       className={`flex relative h-screen flex-col overflow-hidden w-screen overflow-x-clip `}
     >
+      <SongStateManager />
       <div className="flex flex-row w-full h-full">
         <div
           className={`bg-[#101011] h-full lg:block transition-all duration-500 ease-in-out ${
