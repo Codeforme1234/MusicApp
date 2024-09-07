@@ -34,7 +34,7 @@ const Navigation: React.FC<PlaylistmenuProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="rounded-3xl p-3 w-full placeholder:w-[80%] md:placeholder:w-full"
+            className="rounded-3xl p-3 w-full text-black placeholder:w-[80%] md:placeholder:w-full"
             placeholder="Search for artist, songs or albums"
           />
 

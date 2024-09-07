@@ -14,9 +14,8 @@ const Center: React.FC<PlaylistProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   return (
-    <div className={`flex flex-col w-full px-4 md:px-6 `}>
+    <div className={`flex flex-col w-full px-4 md:px-6 bg-[#18191b] text-white`}>
       <Navigation
-        
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         handleSidebarClick={handleSidebarClick}
