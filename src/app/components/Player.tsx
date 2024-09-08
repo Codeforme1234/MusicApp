@@ -73,7 +73,7 @@ const Player = () => {
         audioRef.current?.removeEventListener("timeupdate", updateCurrentTime);
       };
     }
-  }, [currentSong.url]); 
+  }, [currentSong.url]);
 
   const handlePlayPause = () => {
     if (audioRef.current) {
@@ -103,10 +103,10 @@ const Player = () => {
       .padStart(2, "0")}`;
 
   return (
-    <div className="text-white px-6 w-screen flex opacity-85 items-center py-6 bg-black">
+    <div className="text-white px-6 w-screen md:flex opacity-85 items-center py-6 bg-black">
       <audio ref={audioRef} src={currentSong?.url || ""} />
-      <div className="flex md:flex-row flex-col md:w-[20%] w-[5%] items-center gap-4">
-        <div className="lg:block hidden">
+      <div className="hidden md:flex md:flex-row flex-col  md:w-[20%] w-[5%] items-center gap-4">
+        <div className="md:block hidden">
           <div className="text-lg">{truncateText(currentSong.title)}</div>
           <div className="text-sm">{truncateText(currentSong.artist)}</div>
         </div>
@@ -152,27 +152,33 @@ const Player = () => {
           </div>
         </div>
       </div>
-      <div className="md:w-[20%] flex text-lg items-center gap-4">
-        <button onClick={handleMute}>
-          <Image
-            src={isMuted ? muteIcon : volumeIcon}
-            alt="Volume/Mute"
-            className="w-[40px]"
+      <div className="md:w-[20%] flex justify-between m-2 p-2 text-lg items-center gap-4">
+        <div className="md:hidden ">
+          <div className="text-lg">{truncateText(currentSong.title)}</div>
+          <div className="text-sm">{truncateText(currentSong.artist)}</div>
+        </div>
+        <div className=" flex">
+          <button onClick={handleMute}>
+            <Image
+              src={isMuted ? muteIcon : volumeIcon}
+              alt="Volume/Mute"
+              className="w-[40px]"
+            />
+          </button>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="w-full"
           />
-        </button>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={handleVolumeChange}
-          className="w-full"
-        />
+        </div>
         <div className="lg:block hidden w-[40px]">
           <svg
-            width="25px"
-            height="25px"
+            width="35px"
+            height="35px"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

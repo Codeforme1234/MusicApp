@@ -25,7 +25,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [songs, setSongs] = useState<Song[]>([]);
   const [selectedSongs, setSelectedSongs] = useRecoilState(songState);
-  const profileURL =
+  const profileURL =  
     "https://media.licdn.com/dms/image/v2/D5603AQGf0VI5kjmT6g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1719045170102?e=1730937600&v=beta&t=7i_mVXFx4nWrtnO-_zJKCMSkSKYKgcg4AlWQvK-oiJk";
   useMusicAPI({
     onPlaylistsFetched: setPlaylists,
@@ -35,7 +35,6 @@ const Playlist: React.FC<PlaylistProp> = () => {
     count: 5,
   });
 
-  // Reverse the playlist array using the utility function
   const reversedPlaylist = reverseArray(selectedSongs.playlist);
 
   return (
@@ -87,7 +86,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
       </div>
 
       <div className="overflow-scroll no-scrollbar overflow-x-hidden text-white">
-        <div className="flex flex-col text-white h-[200px] mt-2">
+        <div className="flex flex-col text-white h-[260px] mt-2">
           {songs.map((song, index) => (
             <MusicCard
               key={index}
