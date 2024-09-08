@@ -1,6 +1,6 @@
 # Music Player Web App
 
-This is a music player web application built using **Next.js** for the frontend, **Recoil** for state management, and various APIs to fetch and manage music data and images. The app allows users to play songs, manage playlists, view recently played tracks, and toggle between day and night modes.
+This is a music player web application built using **Next.js** for the frontend, **Recoil** for state management, and various APIs to fetch and manage music data and images. The app allows users to play songs, manage playlists, view recently played tracks.
 
 ## Tech Stack
 
@@ -22,7 +22,7 @@ This is a music player web application built using **Next.js** for the frontend,
 To run this project locally:
 
 ```bash
-git clone https://github.com/your-repo/music-player-app.git
-cd music-player-app
+git clone https://github.com/Codeforme1234/musicApp
+cd musicApp
 npm install
 npm run dev
