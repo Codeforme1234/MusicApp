@@ -30,6 +30,7 @@ import fav from "./heart-svgrepo-com.svg";
 import local from "./files-svgrepo-com.svg";
 import device from "./device-multiple-svgrepo-com.svg";
 import share from "./share-svgrepo-com.svg";
+import upwardArrow from "./upwards-arrow-svgrepo-com.svg";
 
 export {
   right,
@@ -64,4 +65,5 @@ export {
   collection,
   fav,
   local,
+  upwardArrow,
 };
