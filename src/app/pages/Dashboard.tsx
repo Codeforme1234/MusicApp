@@ -59,7 +59,7 @@ const Dashboard = () => {
       className={`flex relative h-screen flex-col overflow-hidden w-screen overflow-x-clip`}
     >
       <SongStateManager />
-      <div className="flex flex-row w-full h-full">
+      <div className="flex flex-row w-full">
         <div className="w-[20%] hidden md:block">
           <Sidebar />
         </div>

@@ -101,6 +101,31 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
               ))}
             </div>
           </div>
+          <div>
+            <div className="flex justify-between items-end mt-8">
+              <h1 className="text-white text-xl font-bold">
+                Specials for you
+              </h1>
+              <button
+                className="text-gray-400 text-sm font-semibold"
+                onClick={() => setShowAllSongs(!showAllSongs)}
+              >
+                {showAllSongs ? "Show less" : "See all"}
+              </button>
+            </div>
+
+            <div className="text-white overflow-x-auto w-full no-scrollbar flex gap-4">
+              {songsToShow.map((music, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 md:w-52 w-40"
+                  onClick={() => handleMusicCardClick(music)}
+                >
+                  <MusicCard {...music} />
+                </div>
+              ))}
+            </div>
+          </div>
         </>
       )}
     </div>
