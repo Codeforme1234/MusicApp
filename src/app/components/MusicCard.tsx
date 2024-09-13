@@ -3,6 +3,7 @@ import React from "react";
 import { playbtn } from "@/public";
 import { truncateText } from "../Utils/TruncateText";
 
+
 interface MusicItemProps {
   image: StaticImageData | string;
   title: string;

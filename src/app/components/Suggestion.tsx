@@ -68,7 +68,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
           </div>
 
           <div className="text-white mt-4">
-            <div className="overflow-x-auto space-x-4 flex gap-4 no-scrollbar">
+            <div className="overflow-x-auto flex gap-4 no-scrollbar">
               {playlistsToShow.map((playlist, index) => (
                 <PlaylistCard key={index} title={playlist.name} />
               ))}

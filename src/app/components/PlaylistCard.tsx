@@ -23,13 +23,13 @@ const PlaylistCard: React.FC<Props> = (props) => {
   }, [props.title]);
 
   return (
-    <div className="flex-1 justify-center">
-      <div className="h-[12rem] rounded-lg aspect-square">
+    <div className="flex flex-col justify-center">
+      <div className="h-[10rem] md:h-[12rem] rounded-lg aspect-square">
         {imageUrl && (
           <Image
             className="aspect-square object-cover"
-            height={240}
-            width={240}
+            height={200}
+            width={200}
             src={imageUrl}
             alt={props.title}
           />

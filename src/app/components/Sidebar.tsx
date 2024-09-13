@@ -1,27 +1,19 @@
-"use client";
 import React from "react";
 import Image from "next/image";
-import {
-  logo,
-  homeicon,
-  download,
-  collection,
-  discover,
-  fav,
-  local,
-  left,
-} from "@/public";
+import { logo, homeicon, download, collection,left, discover, fav, local } from "@/public";
 import SidebarItems from "./SidebarItems";
+import { CollapsedSidebar } from "../state/Collapse";
+import { useRecoilState } from "recoil";
+
 
 interface SidebarProps {
-  handleSidebar: () => void;
-  handleSidebarClick: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
-  handleSidebar,
-  handleSidebarClick,
-}) => {
+const Sidebar: React.FC<SidebarProps> = () => {
+  const [collapsed, setCollapsed] = useRecoilState(CollapsedSidebar);
+  const handleSidebarClick = () => {
+    setCollapsed(!collapsed);
+  };
   const featuresItems = [
     { icon: homeicon, label: "Home" },
     { icon: discover, label: "Discover" },
@@ -38,9 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     <div className={`bg-[#101011]  h-full py-8 px-6`}>
       <div className="flex justify-between items-center">
         <Image src={logo} className="h-10 w-10" alt="logo" />
-        <button className="lg:block hidden" onClick={handleSidebar}>
-          <Image src={left} alt="menu" />
-        </button>
+        
         <button className="lg:hidden block" onClick={handleSidebarClick}>
           <Image src={left} alt="menu" />
         </button>

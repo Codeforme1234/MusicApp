@@ -1,16 +1,27 @@
 import React from "react";
 import Image from "next/image";
 import { right, left, dots, menu } from "@/public";
+import { CollapsedPlaylist, CollapsedSidebar } from "../state/Collapse";
+import { useRecoilState } from "recoil";
 
 interface PlaylistmenuProps {}
 const Navigation: React.FC<PlaylistmenuProps> = ({}) => {
+  const [collapsed, setCollapsed] = useRecoilState(CollapsedSidebar);
+  const [collapsedPlaylist, setCollapsedPlaylist] =
+    useRecoilState(CollapsedPlaylist);
+  const handlePlaylistClick = () => {
+    setCollapsedPlaylist(!collapsedPlaylist);
+  };
+  const handleSidebarClick = () => {
+    setCollapsed(!collapsed);
+  };
   return (
     <div className={`w-full flex mt-6 gap-6 justify-center items-center`}>
       <div className="w-1/8 flex gap-2 ">
         <div className="lg:block hidden ">
           <Image src={left} alt="left" />{" "}
         </div>
-        <button className="lg:hidden block">
+        <button className="lg:hidden block" onClick={handleSidebarClick}>
           <Image src={left} alt="left" />{" "}
         </button>
         <div>
@@ -48,7 +59,7 @@ const Navigation: React.FC<PlaylistmenuProps> = ({}) => {
         {" "}
         <Image src={dots} alt="menu" />{" "}
       </button>
-      <button className="w-1/8 lg:hidden block">
+      <button className="w-1/8 lg:hidden block" onClick={handlePlaylistClick}>
         <Image src={menu} alt="menu" />{" "}
       </button>
     </div>

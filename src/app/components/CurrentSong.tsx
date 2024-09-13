@@ -1,8 +1,7 @@
-import React from 'react';
-import Image from 'next/image';
-import { useRecoilValue } from 'recoil';
-import { songState } from '../state/SongAtom';
-
+import React, { use } from "react";
+import Image from "next/image";
+import { useRecoilValue } from "recoil";
+import { songState } from "../state/SongAtom";
 interface Song {
   title: string;
   artist: string;
@@ -15,11 +14,16 @@ const CurrentSong = () => {
   const currentSong = songData.currentSong;
 
   return (
-    <div className='w-full mb-[7rem] p-2 flex'>
+    <div className={`w-full hidden md:block mb-[7rem] p-2  `}>
       {currentSong ? (
-        <Image src={currentSong.image} width={240} height={240} alt="current song" />
+        <Image
+          src={currentSong.image}
+          width={240}
+          height={240}
+          alt="current song"
+        />
       ) : (
-        <p>No song selected</p> 
+        <p>No song selected</p>
       )}
     </div>
   );

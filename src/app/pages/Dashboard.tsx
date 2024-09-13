@@ -5,12 +5,15 @@ import Image from "next/image";
 import right from "../../public/right-2-svgrepo-com.svg";
 import logo from "../../public/Untitled design (6).png";
 import SongStateManager from "../Utils/LocalStorage";
-
+import Playlist from "../components/Playlist";
+import { CollapsedPlaylist, CollapsedSidebar } from "../state/Collapse";
+import { useRecoilState } from "recoil";
+import { motion } from "framer-motion";
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const [play, setPlay] = useState(false);
-  const [openPlaylist, setOpenPlaylist] = useState(false);
-  const [openSidebar, setSidebar] = useState(false);
+  const [openPlaylist, setOpenPlaylist] = useRecoilState(CollapsedPlaylist);
+  const [openSidebar, setSidebar] = useRecoilState(CollapsedSidebar);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +60,9 @@ const Dashboard = () => {
       <div className="flex flex-row w-full h-full">
         <div
           className={`bg-[#101011] h-full lg:block transition-all duration-500 ease-in-out ${
-            openSidebar ? "w-full absolute top-0 right-0 z-50 block" : "hidden"
+            openSidebar
+              ? "w-full duration-300  absolute top-0 right-0 z-50 block"
+              : "hidden"
           } ${open ? "w-6" : "w-[20%]"}`}
         >
           <div className="flex flex-col h-full">
@@ -77,10 +82,8 @@ const Dashboard = () => {
                 Toggle Sidebar
               </div>
             )}
-            <Sidebar
-              handleSidebarClick={handleSidebarClick}
-              handleSidebar={handleSidebar}
-            />
+            <Sidebar />
+
             <CurrentSong />
           </div>
         </div>
@@ -89,7 +92,11 @@ const Dashboard = () => {
             open ? "w-full lg:w-[87%]" : "w-full lg:w-[65%]"
           }`}
         >
-          <Center />
+          <Center
+            handlePlay={handlePlay}
+            handleSidebarClick={handleSidebarClick}
+            handlePlaylistClick={handlePlaylistClick}
+          />
         </div>
         <div
           className={`md:block transition-all duration-500 ease-in-out ${
@@ -99,7 +106,7 @@ const Dashboard = () => {
           }`}
         >
           <div className="flex">
-            <PlayList />
+            <Playlist />
           </div>
         </div>
       </div>

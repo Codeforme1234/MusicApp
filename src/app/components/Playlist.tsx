@@ -6,6 +6,7 @@ import useMusicAPI from "../API/FetchMusic";
 import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
 import { reverseArray } from "../Utils/ReverseArr";
+import { CollapsedPlaylist } from "../state/Collapse";
 
 interface PlaylistProp {}
 
@@ -25,7 +26,12 @@ const Playlist: React.FC<PlaylistProp> = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [songs, setSongs] = useState<Song[]>([]);
   const [selectedSongs, setSelectedSongs] = useRecoilState(songState);
-  const profileURL =  
+  const [collapsed, setCollapsed] = useRecoilState(CollapsedPlaylist);
+
+  function handleCollapsedClick() {
+    setCollapsed(!collapsed);
+  }
+  const profileURL =
     "https://media.licdn.com/dms/image/v2/D5603AQGf0VI5kjmT6g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1719045170102?e=1730937600&v=beta&t=7i_mVXFx4nWrtnO-_zJKCMSkSKYKgcg4AlWQvK-oiJk";
   useMusicAPI({
     onPlaylistsFetched: setPlaylists,
@@ -54,7 +60,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
           <div className="flex gap-2">
             <Image src={notification} alt="notification" />
             <Image src={downarrow} alt="arrow" />
-            <button className="lg:hidden block">
+            <button className="lg:hidden block" onClick={handleCollapsedClick}>
               <Image src={right} alt="right" />
             </button>
           </div>
