@@ -3,9 +3,6 @@ import React, { useState } from "react";
 import { Navigation, Banner, Suggestion } from "../components";
 
 interface PlaylistProps {
-  handlePlaylistClick: () => void;
-  handleSidebarClick: () => void;
-  handlePlay: () => void;
 }
 const Center: React.FC<PlaylistProps> = () => {
   const [searchQuery, setSearchQuery] = useState("");

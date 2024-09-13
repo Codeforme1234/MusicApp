@@ -66,23 +66,26 @@ const Playlist: React.FC<PlaylistProp> = () => {
           </div>
         </div>
       </div>
+      <div className="h-50vh">
+        <div className="flex justify-between items-end mt-4">
+          <h1 className="text-white text-xl font-bold">Recently Played</h1>
+          <button className="text-gray-400 text-sm font-semibold">
+            See all
+          </button>
+        </div>
 
-      <div className="flex justify-between items-end mt-4">
-        <h1 className="text-white text-xl font-bold">Recently Played</h1>
-        <button className="text-gray-400 text-sm font-semibold">See all</button>
-      </div>
-
-      <div className="overflow-scroll no-scrollbar overflow-x-hidden mt-2">
-        <div className="flex flex-col text-white h-[200px]">
-          {reversedPlaylist.map((song: Song, index: number) => (
-            <MusicCard
-              key={index}
-              image={song.image}
-              title={song.title}
-              artist={song.artist}
-              timeAgo="Just now"
-            />
-          ))}
+        <div className="overflow-scroll no-scrollbar overflow-x-hidden mt-2">
+          <div className="flex flex-col text-white md:h-[200px]">
+            {reversedPlaylist.map((song: Song, index: number) => (
+              <MusicCard
+                key={index}
+                image={song.image}
+                title={song.title}
+                artist={song.artist}
+                timeAgo="Just now"
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -92,7 +95,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
       </div>
 
       <div className="overflow-scroll no-scrollbar overflow-x-hidden text-white">
-        <div className="flex flex-col text-white h-[260px] mt-2">
+        <div className="flex flex-col text-white md:h-[240px] mt-2">
           {songs.map((song, index) => (
             <MusicCard
               key={index}
