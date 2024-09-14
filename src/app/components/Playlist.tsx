@@ -75,7 +75,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
         </div>
 
         <div className="overflow-scroll no-scrollbar overflow-x-hidden mt-2">
-          <div className="flex flex-col text-white h-[40vh] md:h-[200px]">
+          <div className="flex flex-col text-white max-h-[40vh] md:h-[200px]">
             {reversedPlaylist.map((song: Song, index: number) => (
               <MusicCard
                 key={index}
