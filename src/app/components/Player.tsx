@@ -115,22 +115,32 @@ const Player = () => {
   return (
     <div className="text-white px-6 w-screen md:flex opacity-85 items-center py-6 bg-black">
       <audio ref={audioRef} src={currentSong?.url || ""} />
-      {!collapsed && <SongDetailsMV />}
-      <motion.div
-        className=" md:hidden" // Adjust styles as needed
-        animate={{ y: [0, -5, 0, -5, 0] }} // Bounce effect
-        transition={{
-          duration: 3, // Duration of the animation
-          ease: "easeInOut",
-          repeat: 2,
-        }}
-        onClick={handleCollapsedClick}
-      >
-        <div className="text-center flex align-center justify-center items-center  my-4">
-          {collapsed ? <span>Swipe to know more</span> : <span>Click to Hide</span>}
-          <Image src={upwardArrow} className={`ml-2 ${collapsed?"":"rotate-180"}`} alt="upward arrow" />
-        </div>
-      </motion.div>
+      <div className="md:hidden">
+        {!collapsed && <SongDetailsMV />}
+        <motion.div
+          className=" md:hidden" // Adjust styles as needed
+          animate={{ y: [0, -5, 0, -5, 0] }} // Bounce effect
+          transition={{
+            duration: 3, // Duration of the animation
+            ease: "easeInOut",
+            repeat: 2,
+          }}
+          onClick={handleCollapsedClick}
+        >
+          <div className="text-center flex align-center justify-center items-center  my-4">
+            {collapsed ? (
+              <span>Swipe to know more</span>
+            ) : (
+              <span>Click to Hide</span>
+            )}
+            <Image
+              src={upwardArrow}
+              className={`ml-2 ${collapsed ? "" : "rotate-180"}`}
+              alt="upward arrow"
+            />
+          </div>
+        </motion.div>
+      </div>
       <div className="md:flex w-full ">
         <div className="hidden md:flex md:flex-row flex-col  md:w-[20%] w-[5%] items-center gap-4">
           <div className="md:block hidden">
