@@ -29,7 +29,6 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
         playlist: updatedPlaylist,
       };
     });
-    console.log("Selected song:", song);
   };
 
   const handlePlaylistClick = (playlistId: number) => {

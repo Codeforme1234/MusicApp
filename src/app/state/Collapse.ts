@@ -13,5 +13,5 @@ export const CollapsedSidebar = atom<boolean>({
 
 export const CollapsedSongDetails = atom<boolean>({
   key: "CollapsedSongDetails",
-  default: false,
+  default: true,
 });

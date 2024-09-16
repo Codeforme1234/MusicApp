@@ -71,7 +71,7 @@ const Dashboard = () => {
           } ${open ? "w-6" : "w-[20%]"}`}
           initial={{ x: "-100%" }} // Sidebar starts off-screen from the left
           animate={{ x: openSidebar ? 0 : "-100%" }} // Slide in from left and out to left
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 0.01, ease: "easeInOut" }}
         >
           <div className="flex flex-col h-full">
             <button
@@ -116,7 +116,7 @@ const Dashboard = () => {
           }`}
           initial={{ x: "100%" }} // Playlist starts off-screen in mobile view
           animate={{ x: openPlaylist ? 0 : "100%" }} // Slide in and out based on `openPlaylist`
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 0.01, ease: "easeInOut" }}
         >
           <div className="flex">
             <Playlist />
