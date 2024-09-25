@@ -18,10 +18,6 @@ const Dashboard = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
-  const handlePlay = () => {
-    setPlay(!play);
-  };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -34,13 +30,6 @@ const Dashboard = () => {
     setOpen(!open);
   };
 
-  const handlePlaylistClick = () => {
-    setOpenPlaylist(!openPlaylist);
-  };
-
-  const handleSidebarClick = () => {
-    setSidebar(!openSidebar);
-  };
 
   if (loading) {
     return (
@@ -56,7 +45,7 @@ const Dashboard = () => {
 
   return (
     <div
-      className={`flex relative h-screen flex-col overflow-hidden w-screen overflow-x-clip`}
+      className={`flex relative h-full flex-col w-screen overflow-x-clip`}
     >
       <SongStateManager />
       <div className="flex flex-row w-full">
