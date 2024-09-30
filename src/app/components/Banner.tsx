@@ -2,18 +2,36 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { banner1, banner2, banner3, banner4 } from '@/public';
-const images = [banner1, banner2, banner3, banner4]; 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { SkeletonTheme } from 'react-loading-skeleton';
+
+const images = [banner1, banner2, banner3, banner4];
 
 const Banner = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 3000);
 
-    return () => clearInterval(interval); 
+    // Simulate loading
+    setTimeout(() => setIsLoading(false), 400);
+
+    return () => clearInterval(interval);
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className='mt-4'>
+        <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        <Skeleton height={300} className="rounded-xl" />
+        </SkeletonTheme>
+      </div>
+    );
+  }
 
   return (
     <div className='mt-4'>

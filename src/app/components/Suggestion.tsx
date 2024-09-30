@@ -5,6 +5,9 @@ import useMusicAPI from "../API/FetchMusic";
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
 import { Song, Playlist } from "../Utils/interfaces";
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
 interface SuggestionProps {
   searchQuery: string;
 }
@@ -48,11 +51,41 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const songsToShow = showAllSongs ? filteredList : filteredList.slice(0, 6);
   const playlistsToShow = showAllPlaylists ? playlists : playlists.slice(0, 6);
 
+  const renderSkeletonLoader = () => (
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <>
+        <div className="flex justify-between items-end mb-4">
+          <Skeleton width={150} height={24} />
+          <Skeleton width={50} height={16} />
+        </div>
+        <div className="flex gap-4 overflow-x-auto no-scrollbar">
+          {[...Array(6)].map((_, index) => (
+            <div key={index} className="flex-shrink-0">
+              <Skeleton width={160} height={160} />
+              <Skeleton width={140} height={20} className="mt-2" />
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between items-end mt-8 mb-4">
+          <Skeleton width={180} height={24} />
+          <Skeleton width={50} height={16} />
+        </div>
+        <div className="flex gap-4 overflow-x-auto no-scrollbar">
+          {[...Array(6)].map((_, index) => (
+            <div key={index} className="flex-shrink-0">
+              <Skeleton width={160} height={160} />
+              <Skeleton width={140} height={20} className="mt-2" />
+            </div>
+          ))}
+        </div>
+      </>
+    </SkeletonTheme>
+  );
+
   return (
     <div className="mt-6 pb-20">
-      {/* Loading state */}
       {loading ? (
-        <div className="text-white">Loading...</div>
+        renderSkeletonLoader()
       ) : (
         <>
           {/* Playlists Section */}

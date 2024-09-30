@@ -31,6 +31,10 @@ import local from "./files-svgrepo-com.svg";
 import device from "./device-multiple-svgrepo-com.svg";
 import share from "./share-svgrepo-com.svg";
 import upwardArrow from "./upwards-arrow-svgrepo-com.svg";
+import play from "./play-svgrepo-com.svg";
+import pause from "./pause-svgrepo-com.svg";  
+import desktop from "./desktop-svgrepo-com.svg";
+import heart from "./heart-svgrepo-com.svg";
 
 export {
   right,
@@ -66,4 +70,8 @@ export {
   fav,
   local,
   upwardArrow,
+  play,
+  pause,
+  desktop,
+  heart,
 };

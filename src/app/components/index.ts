@@ -9,5 +9,6 @@ import CurrentSong from "./CurrentSong";
 import MusicCard from "./MusicCard";
 import SidebarItems from "./SidebarItems";
 import PlaylistCard from "./PlaylistCard";
+import MobilePlayer from "./MobilePlayer";
 
-export { Banner, Center, Navigation, PlaylistCard, PlayList, SidebarItems, MusicCard, Player, Sidebar, CurrentSong, Suggestion };
+export { Banner, MobilePlayer, Center, Navigation, PlaylistCard, PlayList, SidebarItems, MusicCard, Player, Sidebar, CurrentSong, Suggestion };
