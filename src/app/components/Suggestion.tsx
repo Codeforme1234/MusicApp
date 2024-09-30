@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { MusicCard, PlaylistCard } from "../components";
 import useMusicAPI from "../API/FetchMusic";
+import { fetchPixabayImageURL } from "../API/ImageApi";
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
 import { Song, Playlist } from "../Utils/interfaces";
@@ -15,40 +16,59 @@ interface SuggestionProps {
 const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<number | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
   const [showAllSongs, setShowAllSongs] = useState(false);
   const [showAllPlaylists, setShowAllPlaylists] = useState(false);
   const [songData, setSongData] = useRecoilState(songState);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleMusicCardClick = (song: Song) => {
-    setSongData((prevState) => {
-      const updatedPlaylist = prevState.currentSong
+    setSongData((prevState) => ({
+      ...prevState,
+      currentSong: song,
+      playlist: prevState.currentSong
         ? [...prevState.playlist, prevState.currentSong]
-        : prevState.playlist;
-
-      return {
-        ...prevState,
-        currentSong: song,
-        playlist: updatedPlaylist,
-      };
-    });
+        : prevState.playlist,
+    }));
   };
 
-  const handlePlaylistClick = (playlistId: number) => {
-    setSelectedPlaylist(playlistId);
+  const handlePlaylistClick = (playlist: Playlist) => {
+    setSelectedPlaylist(playlist);
   };
 
-  const { loading } = useMusicAPI({
-    onPlaylistsFetched: setPlaylists,
-    onSongsFetched: setSongs,
-    selectedPlaylist: playlists.find((p) => p.id === selectedPlaylist) || null,
+  const fetchImageForPlaylist = useCallback(async (playlist: Playlist): Promise<Playlist> => {
+    const imageUrl = await fetchPixabayImageURL(playlist.name);
+    return { ...playlist, image: imageUrl || '' } as Playlist & { image: string };
+  }, []);
+
+  const handlePlaylistsFetched = useCallback(async (fetchedPlaylists: Playlist[]) => {
+    const playlistsWithImages = await Promise.all(
+      fetchedPlaylists.map(fetchImageForPlaylist)
+    );
+    setPlaylists(playlistsWithImages);
+  }, [fetchImageForPlaylist]);
+
+  const handleSongsFetched = useCallback((fetchedSongs: Song[]) => {
+    setSongs(fetchedSongs);
+  }, []);
+
+  const { loading: apiLoading } = useMusicAPI({
+    onPlaylistsFetched: handlePlaylistsFetched,
+    onSongsFetched: handleSongsFetched,
+    selectedPlaylist,
   });
 
-  const filteredList = songs.filter((music) =>
-    music.title.toLowerCase().includes(searchQuery.toLowerCase())
+  useEffect(() => {
+    if (!apiLoading && songs.length > 0 && playlists.length > 0) {
+      setIsLoading(false);
+    }
+  }, [apiLoading, songs, playlists]);
+
+  const filteredSongs = songs.filter((song) =>
+    song.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const songsToShow = showAllSongs ? filteredList : filteredList.slice(0, 6);
+  const songsToShow = showAllSongs ? filteredSongs : filteredSongs.slice(0, 6);
   const playlistsToShow = showAllPlaylists ? playlists : playlists.slice(0, 6);
 
   const renderSkeletonLoader = () => (
@@ -82,84 +102,59 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
     </SkeletonTheme>
   );
 
+  if (isLoading) {
+    return <div className="mt-6 pb-20">{renderSkeletonLoader()}</div>;
+  }
+
   return (
     <div className="mt-6 pb-20">
-      {loading ? (
-        renderSkeletonLoader()
-      ) : (
-        <>
-          {/* Playlists Section */}
-          <div className="flex justify-between items-end">
-            <h1 className="text-white text-2xl font-bold">Hello, Devesh</h1>
-            <button
-              className="text-gray-400 text-sm font-semibold"
-              onClick={() => setShowAllPlaylists(!showAllPlaylists)}
+      {/* Playlists Section */}
+      <div className="flex justify-between items-end">
+        <h1 className="text-white text-2xl font-bold">Hello, Devesh</h1>
+        <button
+          className="text-gray-400 text-sm font-semibold"
+          onClick={() => setShowAllPlaylists(!showAllPlaylists)}
+        >
+          {showAllPlaylists ? "Show less" : "See all"}
+        </button>
+      </div>
+
+      <div className="text-white mt-4">
+        <div className="overflow-x-auto flex gap-4 no-scrollbar">
+          {playlistsToShow.map((playlist, index) => (
+            <div key={index} onClick={() => handlePlaylistClick(playlist)}>
+              <PlaylistCard title={playlist.name} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Songs Section */}
+      <div>
+        <div className="flex justify-between items-end mt-8">
+          <h1 className="text-white text-xl font-bold">
+            {selectedPlaylist ? selectedPlaylist.name : "New releases for you"}
+          </h1>
+          <button
+            className="text-gray-400 text-sm font-semibold"
+            onClick={() => setShowAllSongs(!showAllSongs)}
+          >
+            {showAllSongs ? "Show less" : "See all"}
+          </button>
+        </div>
+
+        <div className="text-white overflow-x-auto w-full no-scrollbar flex gap-4">
+          {songsToShow.map((song, index) => (
+            <div
+              key={index}
+              className="flex-shrink-0 md:w-52 w-40"
+              onClick={() => handleMusicCardClick(song)}
             >
-              {showAllPlaylists ? "Show less" : "See all"}
-            </button>
-          </div>
-
-          <div className="text-white mt-4">
-            <div className="overflow-x-auto flex gap-4 no-scrollbar">
-              {playlistsToShow.map((playlist, index) => (
-                <PlaylistCard key={index} title={playlist.name} />
-              ))}
+              <MusicCard {...song} />
             </div>
-          </div>
-
-          {/* Songs Section */}
-          <div>
-            <div className="flex justify-between items-end mt-8">
-              <h1 className="text-white text-xl font-bold">
-                New releases for you
-              </h1>
-              <button
-                className="text-gray-400 text-sm font-semibold"
-                onClick={() => setShowAllSongs(!showAllSongs)}
-              >
-                {showAllSongs ? "Show less" : "See all"}
-              </button>
-            </div>
-
-            <div className="text-white overflow-x-auto w-full no-scrollbar flex gap-4">
-              {songsToShow.map((music, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 md:w-52 w-40"
-                  onClick={() => handleMusicCardClick(music)}
-                >
-                  <MusicCard {...music} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between items-end mt-8">
-              <h1 className="text-white text-xl font-bold">
-                Specials for you
-              </h1>
-              <button
-                className="text-gray-400 text-sm font-semibold"
-                onClick={() => setShowAllSongs(!showAllSongs)}
-              >
-                {showAllSongs ? "Show less" : "See all"}
-              </button>
-            </div>
-
-            <div className="text-white overflow-x-auto w-full no-scrollbar flex gap-4">
-              {songsToShow.map((music, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 md:w-52 w-40"
-                  onClick={() => handleMusicCardClick(music)}
-                >
-                  <MusicCard {...music} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

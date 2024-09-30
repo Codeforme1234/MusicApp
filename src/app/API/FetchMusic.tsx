@@ -59,6 +59,7 @@ const useMusicAPI = ({
     try {
       const response = await fetch(url);
       const data = await response.json();
+      console.log(data);
       const fetchedSongs = data.map((song: any) => ({
         title: song.title,
         artist: song.user.username,

@@ -32,10 +32,10 @@ import device from "./device-multiple-svgrepo-com.svg";
 import share from "./share-svgrepo-com.svg";
 import upwardArrow from "./upwards-arrow-svgrepo-com.svg";
 import play from "./play-svgrepo-com.svg";
-import pause from "./pause-svgrepo-com.svg";  
+import pause from "./pause-svgrepo-com.svg";
 import desktop from "./desktop-svgrepo-com.svg";
 import heart from "./heart-svgrepo-com.svg";
-
+import likedheart from "./heart-illustration-1-svgrepo-com.svg";
 export {
   right,
   device,
@@ -74,4 +74,5 @@ export {
   pause,
   desktop,
   heart,
+  likedheart,
 };
