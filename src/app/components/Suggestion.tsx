@@ -107,7 +107,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   }
 
   return (
-    <div className="mt-6 pb-20">
+    <div className="mt-6 h-full pb-20">
       {/* Playlists Section */}
       <div className="flex justify-between items-end">
         <h1 className="text-white text-2xl font-bold">Hello, Devesh</h1>

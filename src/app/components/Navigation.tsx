@@ -16,7 +16,7 @@ const Navigation: React.FC<PlaylistmenuProps> = ({}) => {
     setCollapsed(!collapsed);
   };
   return (
-    <div className={`w-full flex mt-6 gap-6 justify-center items-center`}>
+    <div className={`w-full h-full flex pt-3 gap-3 justify-center items-center`}>
       <div className="w-1/8 flex gap-2 ">
         <div className="lg:block hidden ">
           <Image src={left} alt="left" />{" "}
@@ -34,7 +34,7 @@ const Navigation: React.FC<PlaylistmenuProps> = ({}) => {
           <input
             type="text"
             className="rounded-3xl p-3 w-full text-black placeholder:w-[80%] md:placeholder:w-full"
-            placeholder="Search for artist, songs or albums"
+            placeholder="Search here..."
           />
 
           <button type="submit" className="absolute right-6 top-6">

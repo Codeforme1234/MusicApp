@@ -5,6 +5,9 @@ import { songState } from "../state/SongAtom";
 import Image from "next/image";
 import { truncateText } from "../Utils/TruncateText";
 import { play, pause, heart, desktop, likedheart } from "@/public";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import AdvancedMobilePlayer from "./AdvanceMobilePlayer";
 
 interface Song {
   image: string;
@@ -27,6 +30,8 @@ const MobilePlayer = () => {
     artist: "",
   };
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (audioRef.current) {
       const updatePlayState = () => setIsPlaying(!audioRef.current?.paused);
@@ -39,6 +44,15 @@ const MobilePlayer = () => {
       };
     }
   }, [currentSong.url]);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handlePlayPause = () => {
     if (audioRef.current) {
@@ -54,16 +68,42 @@ const MobilePlayer = () => {
       }));
     }
   };
+  const tryit = () => {
+    console.log("tryit");
+  };
 
   const handleLike = () => {
     setIsLiked(!isLiked);
   };
 
+  if (loading) {
+    return (
+      <SkeletonTheme baseColor="#222222" highlightColor="#444444">
+        <div className="bg-[#222222] text-white p-2 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-2">
+              <Skeleton width={40} height={40} className="rounded-lg" />
+              <div>
+                <Skeleton width={100} height={16} />
+                <Skeleton width={80} height={12} />
+              </div>
+            </div>
+            <div className="flex items-center space-x-5">
+              <Skeleton width={29} height={29} />
+              <Skeleton width={29} height={29} />
+              <Skeleton width={29} height={29} />
+            </div>
+          </div>
+        </div>
+      </SkeletonTheme>
+    );
+  }
+
   return (
     <div className={` bg-[#222222] text-white p-2 rounded-lg`}>
       <audio ref={audioRef} src={currentSong?.url || ""} />
       <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2" onClick={tryit}>
           <Image
             src={currentSong.image}
             alt="Album Art"
@@ -102,12 +142,6 @@ const MobilePlayer = () => {
           </button>
         </div>
       </div>
-      {isExpanded && (
-        <div className="mt-4 h-full">
-          <h2 className="text-2xl font-bold mb-2">{currentSong.title}</h2>
-          <p className="text-lg mb-4">{currentSong.artist}</p>
-        </div>
-      )}
     </div>
   );
 };

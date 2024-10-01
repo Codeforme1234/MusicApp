@@ -5,7 +5,9 @@ export default function Home() {
   return (
     <div>
       <RecoilRoot>
+        <main> 
           <Dashboard />
+        </main>
       </RecoilRoot>
     </div>
   );

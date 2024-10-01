@@ -25,7 +25,7 @@ const Banner = () => {
 
   if (isLoading) {
     return (
-      <div className='mt-4'>
+      <div className='mt-4 h-full'>
         <SkeletonTheme baseColor="#202020" highlightColor="#444">
         <Skeleton height={300} className="rounded-xl" />
         </SkeletonTheme>
@@ -34,7 +34,7 @@ const Banner = () => {
   }
 
   return (
-    <div className='mt-4'>
+    <div className='mt-4 h-full'>
       <div className='relative w-full h-[300px]'>
         {images.map((image, index) => (
           <Image
