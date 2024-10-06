@@ -19,6 +19,8 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ title, items }) => {
               src={item.icon}
               className="group-hover:fill-[#2563eb]"
               alt="icon"
+              height={24}
+              width={24}
             />
             <h4 className="text-gray-300 font-medium text-2xl md:text-sm group-hover:text-blue-600">
               {item.label}

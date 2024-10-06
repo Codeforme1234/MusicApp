@@ -9,6 +9,7 @@ import { Song, Playlist } from "../Utils/interfaces";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { selectedPlaylistAtom } from "../state/PlaylistAtom";
+import { selectedSongAtom } from "../state/SelectedSong";
 
 interface SuggestionProps {
   searchQuery: string;
@@ -22,15 +23,35 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const [songData, setSongData] = useRecoilState(songState);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlaylist, setSelectedPlaylist] = useRecoilState(selectedPlaylistAtom);
+  const [selectedSong, setSelectedSong] = useRecoilState(selectedSongAtom);
+  const [selectedSongIndex, setSelectedSongIndex] = useState<number | null>(null);
 
   const handleMusicCardClick = (song: Song) => {
-    setSongData((prevState) => ({
-      ...prevState,
-      currentSong: song,
-      playlist: prevState.currentSong
-        ? [...prevState.playlist, prevState.currentSong]
-        : prevState.playlist,
-    }));
+    setSelectedSong(song);
+    setSongData((prevState) => {
+      // Check if the last song in the playlist is the same as the current song
+      const lastSong = prevState.playlist[prevState.playlist.length - 1];
+      const isSameAsPrevious = lastSong && 
+        lastSong.title === song.title && 
+        lastSong.artist === song.artist;
+
+      // If it's the same, don't add it to the playlist
+      if (isSameAsPrevious) {
+        return {
+          ...prevState,
+          currentSong: song,
+        };
+      }
+
+      // If it's different, add it to the playlist
+      return {
+        ...prevState,
+        currentSong: song,
+        playlist: prevState.currentSong
+          ? [...prevState.playlist, prevState.currentSong]
+          : prevState.playlist,
+      };
+    });
   };
 
   const fetchImageForPlaylist = useCallback(
@@ -152,9 +173,12 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
             <div
               key={index}
               className="flex-shrink-0 md:w-52 w-40"
-              onClick={() => handleMusicCardClick(song)}
             >
-              <MusicCard {...song} />
+              <MusicCard 
+                {...song} 
+                isSelected={selectedSong?.title === song.title && selectedSong?.artist === song.artist}
+                onSelect={() => handleMusicCardClick(song)}
+              />
             </div>
           ))}
         </div>

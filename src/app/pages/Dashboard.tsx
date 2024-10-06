@@ -29,7 +29,7 @@ const Dashboard = () => {
   }, [selectedPlaylist, setOpenPlaylist]);
 
   const handleCloseModal = () => {
-    setSelectedPlaylist({ id: null, image: null });
+    setSelectedPlaylist({ id: null, title: null, image: null });
     setOpenPlaylist(false);
   };
 

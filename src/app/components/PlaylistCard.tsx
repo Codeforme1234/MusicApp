@@ -28,7 +28,7 @@ const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
   }, [title]);
 
   const handleClick = () => {
-    setSelectedPlaylist({ id, image: imageUrl });
+    setSelectedPlaylist({ id, title, image: imageUrl });
   };
 
   return (

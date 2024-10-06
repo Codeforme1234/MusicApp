@@ -11,6 +11,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Song } from "../Utils/interfaces";
 import { selectedPlaylistAtom } from "../state/PlaylistAtom";
 import { Playlist } from "../Utils/interfaces";
+import { selectedSongAtom } from "../state/SelectedSong";
 
 interface PlayListModalProps {
   onClose: () => void;
@@ -23,6 +24,10 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlaylist, setSelectedPlaylist] =
     useRecoilState(selectedPlaylistAtom);
+  const [selectedSongIndex, setSelectedSongIndex] = useState<number | null>(
+    null
+  );
+  const [selectedSong, setSelectedSong] = useRecoilState(selectedSongAtom);
 
   const PlaylistSkeleton = () => (
     <div className="mt-4">
@@ -60,6 +65,15 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
   function handleCollapsedClick() {
     setCollapsed(!collapsed);
   }
+
+  const handleSongSelect = (song: Song) => {
+    setSelectedSong(song);
+    setSelectedSongs((prevState) => ({
+      ...prevState,
+      currentSong: song,
+      playlist: [...prevState.playlist, song],
+    }));
+  };
 
   if (isLoading) {
     return (
@@ -102,7 +116,7 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
         <div className="flex justify-between items-end mt-4">
           <h1 className="text-white uppercase font-semibold text-xl md:text-sm">
             {selectedPlaylist.id !== null
-              ? `${selectedPlaylist.id}`
+              ? selectedPlaylist.title || "Bass"
               : "No playlist selected"}
           </h1>
         </div>
@@ -116,6 +130,11 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
                   title={song.title}
                   artist={song.artist}
                   timeAgo="."
+                  isSelected={
+                    selectedSong?.title === song.title &&
+                    selectedSong?.artist === song.artist
+                  }
+                  onSelect={() => handleSongSelect(song)}
                 />
               ))}
             </div>

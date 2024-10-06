@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Image from "next/image";
 import MusicCard from "./MusicCard";
 import { notification, profile, downarrow, right } from "@/public";
@@ -9,7 +9,7 @@ import { reverseArray } from "../Utils/ReverseArr";
 import { CollapsedPlaylist } from "../state/Collapse";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import { selectedSongAtom } from "../state/SelectedSong";
 interface PlaylistProp {}
 
 interface Playlist {
@@ -30,6 +30,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
   const [selectedSongs, setSelectedSongs] = useRecoilState(songState);
   const [collapsed, setCollapsed] = useRecoilState(CollapsedPlaylist);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedSong, setSelectedSong] = useRecoilState(selectedSongAtom);
 
   function handleCollapsedClick() {
     setCollapsed(!collapsed);
@@ -48,6 +49,18 @@ const Playlist: React.FC<PlaylistProp> = () => {
   });
 
   const reversedPlaylist = reverseArray(selectedSongs.playlist);
+
+  const handleSongSelect = useCallback(
+    (song: Song) => {
+      setSelectedSong(song);
+      setSelectedSongs((prevState) => ({
+        ...prevState,
+        currentSong: song,
+        playlist: [...prevState.playlist, song],
+      }));
+    },
+    [setSelectedSong, setSelectedSongs]
+  );
 
   if (isLoading) {
     return <PlaylistSkeleton />;
@@ -95,6 +108,11 @@ const Playlist: React.FC<PlaylistProp> = () => {
                   title={song.title}
                   artist={song.artist}
                   timeAgo="Just now"
+                  isSelected={
+                    selectedSong?.title === song.title &&
+                    selectedSong?.artist === song.artist
+                  }
+                  onSelect={() => handleSongSelect(song)}
                 />
               ))}
             </div>
@@ -116,6 +134,11 @@ const Playlist: React.FC<PlaylistProp> = () => {
                   title={song.title}
                   artist={song.artist}
                   timeAgo="."
+                  isSelected={
+                    selectedSong?.title === song.title &&
+                    selectedSong?.artist === song.artist
+                  }
+                  onSelect={() => handleSongSelect(song)}
                 />
               ))}
             </div>
