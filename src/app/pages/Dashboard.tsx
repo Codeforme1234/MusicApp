@@ -8,50 +8,35 @@ import {
   CurrentSong,
   MobilePlayer,
 } from "../components";
-import Image from "next/image";
-import right from "../../public/right-2-svgrepo-com.svg";
-import logo from "../../public/Untitled design (6).png";
 import SongStateManager from "../Utils/LocalStorage";
 import Playlist from "../components/Playlist";
 import { CollapsedPlaylist, CollapsedSidebar } from "../state/Collapse";
 import { useRecoilState } from "recoil";
-import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(false);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(CollapsedPlaylist);
-  const [openSidebar, setSidebar] = useRecoilState(CollapsedSidebar);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [loading, setLoading] = useState(true);
-
-  const handleSidebar = () => {
-    setOpen(!open);
-  };
+  const [openSidebar, setOpenSidebar] = useRecoilState(CollapsedSidebar);
 
   return (
-    <div className=""> 
-    <div className="flex flex-col h-[93vh] w-screen overflow-hidden">
+    <div className="flex flex-col h-[100dvh] w-screen overflow-hidden">
       <SongStateManager />
       <div className="flex flex-row relative w-full h-full overflow-hidden">
-        <div className="w-[20%] hidden md:block">
+        <div className={`w-[80%] md:w-[20%] fixed md:relative h-full z-20 transition-transform duration-300 ease-in-out ${openSidebar ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
           <Sidebar />
         </div>
-        {/* Main content */}
         <div className="flex-grow overflow-hidden">
           <Center />
         </div>
-        <div className="w-[27%] hidden md:block">
+        <div className={`w-[80%] md:w-[27%] fixed md:relative right-0 h-full z-20 transition-transform duration-300 ease-in-out ${openPlaylist ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}`}>
           <Playlist />
         </div>
       </div>
-      <div className="md:hidden absolute bg-[#18191b] bottom-0 left-0 w-full border-none h-[9vh] overflow-hidden p-3">
+      <div className="md:hidden fixed bottom-0 left-0 w-full border-none h-[9vh] overflow-hidden p-3 z-30">
         <MobilePlayer />
       </div>
-      {/* Player component */}
       <div className="hidden md:block h-[10vh]">
         <Player />
       </div>
-    </div>
     </div>
   );
 };

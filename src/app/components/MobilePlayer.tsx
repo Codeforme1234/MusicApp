@@ -8,6 +8,7 @@ import { play, pause, heart, desktop, likedheart } from "@/public";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AdvancedMobilePlayer from "./AdvanceMobilePlayer";
+import { playPauseAudio } from "./AudioControl";
 
 interface Song {
   image: string;
@@ -46,7 +47,6 @@ const MobilePlayer = () => {
   }, [currentSong.url]);
 
   useEffect(() => {
-    // Simulate loading delay
     const timer = setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -55,21 +55,15 @@ const MobilePlayer = () => {
   }, []);
 
   const handlePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(console.error);
-      }
-      setIsPlaying(!isPlaying);
-      setSongData((prevState) => ({
-        ...prevState,
-        isPlaying: !isPlaying,
-      }));
-    }
+    playPauseAudio(audioRef, isPlaying, setIsPlaying);
+    setSongData((prevState) => ({
+      ...prevState,
+      isPlaying: !isPlaying,
+    }));
   };
-  const tryit = () => {
-    console.log("tryit");
+
+  const openAdvancedPlayer = () => {
+    setIsExpanded(true);
   };
 
   const handleLike = () => {
@@ -100,49 +94,54 @@ const MobilePlayer = () => {
   }
 
   return (
-    <div className={` bg-[#222222] text-white p-2 rounded-lg`}>
-      <audio ref={audioRef} src={currentSong?.url || ""} />
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2" onClick={tryit}>
-          <Image
-            src={currentSong.image}
-            alt="Album Art"
-            width={40}
-            height={40}
-            className="rounded-lg"
-          />
-          <div>
-            <div className="text-sm font-semibold">
-              {truncateText(currentSong.title, 25)}
-            </div>
-            <div className="text-xs text-gray-400">
-              {truncateText(currentSong.artist, 20)}
+    <>
+      <div className={`bg-[#222222] text-white p-2 rounded-lg`}>
+        <audio ref={audioRef} src={currentSong?.url || ""} />
+        <div className="flex justify-between items-center">
+          <div className="flex items-center cursor-pointer space-x-2" onClick={openAdvancedPlayer}>
+            <Image
+              src={currentSong.image}
+              alt="Album Art"
+              width={40}
+              height={40}
+              className="rounded-lg"
+            />
+            <div>
+              <div className="text-sm font-semibold">
+                {truncateText(currentSong.title, 25)}
+              </div>
+              <div className="text-xs text-gray-400">
+                {truncateText(currentSong.artist, 20)}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-5">
-          <div>
-            <Image src={desktop} alt="Desktop" width={29} height={29} />
+          <div className="flex items-center space-x-5">
+            <div>
+              <Image src={desktop} alt="Desktop" width={29} height={29} />
+            </div>
+            <button onClick={handleLike}>
+              <Image
+                src={isLiked ? likedheart : heart}
+                alt={isLiked ? "Liked" : "Like"}
+                width={29}
+                height={29}
+              />
+            </button>
+            <button onClick={handlePlayPause}>
+              <Image
+                src={isPlaying ? pause : play}
+                alt={isPlaying ? "Pause" : "Play"}
+                width={isPlaying ? 29 : 25}
+                height={isPlaying ? 29 : 25}
+              />
+            </button>
           </div>
-          <button onClick={handleLike}>
-            <Image
-              src={isLiked ? likedheart : heart}
-              alt={isLiked ? "Liked" : "Like"}
-              width={29}
-              height={29}
-            />
-          </button>
-          <button onClick={handlePlayPause}>
-            <Image
-              src={isPlaying ? pause : play}
-              alt={isPlaying ? "Pause" : "Play"}
-              width={isPlaying ? 29 : 25}
-              height={isPlaying ? 29 : 25}
-            />
-          </button>
         </div>
       </div>
-    </div>
+      {isExpanded && (
+        <AdvancedMobilePlayer onClose={() => setIsExpanded(false)} isExpanded={isExpanded} />
+      )}
+    </>
   );
 };
 

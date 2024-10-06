@@ -15,3 +15,29 @@
 .html .body {
   height: 100%;
 }
+
+/* Add these new styles for mobile sidebar and playlist transitions */
+@media (max-width: 767px) {
+  .sidebar-transition {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .playlist-transition {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* New styles for advanced mobile player transition */
+  .advanced-player-transition {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+
+  .advanced-player-closed {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .advanced-player-open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

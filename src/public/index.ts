@@ -36,6 +36,13 @@ import pause from "./pause-svgrepo-com.svg";
 import desktop from "./desktop-svgrepo-com.svg";
 import heart from "./heart-svgrepo-com.svg";
 import likedheart from "./heart-illustration-1-svgrepo-com.svg";
+import forward from "./forward-3-svgrepo-com.svg";
+import backward from "./backward-3-svgrepo-com.svg";
+import queueIcon from "./queue-svgrepo-com.svg";
+import repeat from "./repeat-svgrepo-com.svg";
+import mainplay from "./newplay.svg"
+import mainpause from "./newpause.svg"
+
 export {
   right,
   device,
@@ -75,4 +82,10 @@ export {
   desktop,
   heart,
   likedheart,
+  forward,
+  backward,
+  queueIcon,
+  repeat,
+  mainplay,
+  mainpause
 };

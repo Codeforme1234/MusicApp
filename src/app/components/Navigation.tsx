@@ -9,24 +9,26 @@ const Navigation: React.FC<PlaylistmenuProps> = ({}) => {
   const [collapsed, setCollapsed] = useRecoilState(CollapsedSidebar);
   const [collapsedPlaylist, setCollapsedPlaylist] =
     useRecoilState(CollapsedPlaylist);
+
   const handlePlaylistClick = () => {
     setCollapsedPlaylist(!collapsedPlaylist);
   };
+
   const handleSidebarClick = () => {
     setCollapsed(!collapsed);
   };
+
   return (
     <div className={`w-full h-full flex pt-3 gap-3 justify-center items-center`}>
       <div className="w-1/8 flex gap-2 ">
-        <div className="lg:block hidden ">
-          <Image src={left} alt="left" />{" "}
-        </div>
         <button className="lg:hidden block" onClick={handleSidebarClick}>
-          <Image src={left} alt="left" />{" "}
+          <Image src={left} alt="left" />
         </button>
+        <div className="lg:block hidden">
+          <Image src={left} alt="left" />
+        </div>
         <div>
-          {" "}
-          <Image src={right} alt="left" />
+          <Image src={right} alt="right" />
         </div>
       </div>
       <div className="round w-full  ">
