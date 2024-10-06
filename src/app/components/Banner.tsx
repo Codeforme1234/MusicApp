@@ -23,31 +23,29 @@ const Banner = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className='mt-4 h-full'>
-        <SkeletonTheme baseColor="#202020" highlightColor="#444">
-        <Skeleton height={300} className="rounded-xl" />
-        </SkeletonTheme>
-      </div>
-    );
-  }
+  const bannerContent = isLoading ? (
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <Skeleton height={300} className="rounded-xl" />
+    </SkeletonTheme>
+  ) : (
+    <div className='relative w-full h-[300px]'>
+      {images.map((image, index) => (
+        <Image
+          key={index}
+          src={image}
+          className={`rounded-xl h-[300px] w-full object-cover absolute inset-0 transition-opacity duration-1000 hover:opacity-40 ${
+            index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+          alt={`banner-${index}`}
+          priority={true}
+        />
+      ))}
+    </div>
+  );
 
   return (
-    <div className='mt-4 h-full'>
-      <div className='relative w-full h-[300px]'>
-        {images.map((image, index) => (
-          <Image
-            key={index}
-            src={image}
-            className={`rounded-xl h-[300px] w-full object-cover absolute inset-0 transition-opacity duration-1000 hover:opacity-40 ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-            alt={`banner-${index}`}
-            priority={true}
-          />
-        ))}
-      </div>
+    <div className='mt-4 h-[300px] w-full'>
+      {bannerContent}
     </div>
   );
 };

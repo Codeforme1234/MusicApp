@@ -18,34 +18,18 @@ import { selectedPlaylistAtom } from "../state/PlaylistAtom";
 const Dashboard = () => {
   const [openPlaylist, setOpenPlaylist] = useRecoilState(CollapsedPlaylist);
   const [openSidebar, setOpenSidebar] = useRecoilState(CollapsedSidebar);
-  const [selectedPlaylistId, setSelectedPlaylistId] = useRecoilState(selectedPlaylistAtom);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<{
-    id: number;
-    name: string;
-  } | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useRecoilState(selectedPlaylistAtom);
 
   useEffect(() => {
-    if (selectedPlaylistId) {
-      // Fetch the playlist details based on the selectedPlaylistId
-      // This is a placeholder, replace with your actual API call
-      const fetchedPlaylist = { id: selectedPlaylistId, name: "Playlist Name" };
-      setSelectedPlaylist(fetchedPlaylist);
+    if (selectedPlaylist.id !== null) {
       setOpenPlaylist(true);
     } else {
-      setSelectedPlaylist(null);
       setOpenPlaylist(false);
     }
-  }, [selectedPlaylistId]);
-
-  const handlePlaylistClick = (playlist: { id: number; name: string }) => {
-    setSelectedPlaylistId(playlist.id);
-    setSelectedPlaylist(playlist);
-    setOpenPlaylist(true);
-  };
+  }, [selectedPlaylist, setOpenPlaylist]);
 
   const handleCloseModal = () => {
-    setSelectedPlaylistId(null);
-    setSelectedPlaylist(null);
+    setSelectedPlaylist({ id: null, image: null });
     setOpenPlaylist(false);
   };
 
@@ -68,11 +52,8 @@ const Dashboard = () => {
             openPlaylist ? "translate-x-0" : "translate-x-full md:translate-x-0"
           }`}
         >
-          {selectedPlaylist ? (
-            <PlayListModal
-              playlist={selectedPlaylist}
-              onClose={handleCloseModal}
-            />
+          {selectedPlaylist.id !== null ? (
+            <PlayListModal onClose={handleCloseModal} />
           ) : (
             <Playlist />
           )}

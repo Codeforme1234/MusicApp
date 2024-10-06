@@ -8,12 +8,12 @@ const Center: React.FC<PlaylistProps> = () => {
 
   return (
     <div
-      className={`flex flex-col h-full no-scrollbar w-full px-4 md:px-6 bg-[#18191b] text-white overflow-hidden`}
+      className={`flex flex-col h-full pb-3 no-scrollbar w-full px-4 md:px-6 bg-[#18191b] text-white overflow-hidden`}
     >
       <div className="h-[9%]">
         <Navigation />
       </div>
-      <div className="flex-grow overflow-y-auto h-[91%] no-scrollbar overflow-x-hidden">
+      <div className="flex-grow mt-3 overflow-y-auto h-[91%] no-scrollbar overflow-x-hidden">
         <div>
           <Banner />
         </div>

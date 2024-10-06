@@ -21,7 +21,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const [showAllPlaylists, setShowAllPlaylists] = useState(false);
   const [songData, setSongData] = useRecoilState(songState);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedPlaylistId, setSelectedPlaylistId] = useRecoilState(selectedPlaylistAtom);
+  const [selectedPlaylist, setSelectedPlaylist] = useRecoilState(selectedPlaylistAtom);
 
   const handleMusicCardClick = (song: Song) => {
     setSongData((prevState) => ({
@@ -31,10 +31,6 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
         ? [...prevState.playlist, prevState.currentSong]
         : prevState.playlist,
     }));
-  };
-
-  const handlePlaylistClick = (playlist: Playlist) => {
-    setSelectedPlaylistId(playlist.id);
   };
 
   const fetchImageForPlaylist = useCallback(
@@ -128,13 +124,11 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
       <div className="text-white mt-4">
         <div className="overflow-x-auto flex gap-4 no-scrollbar">
           {playlistsToShow.map((playlist, index) => (
-            <div
-              key={index}
-              onClick={() => handlePlaylistClick(playlist)}
-            >
+            <div key={index}>
               <PlaylistCard 
+                id={playlist.id}
                 title={playlist.name} 
-                isSelected={selectedPlaylistId === playlist.id}
+                isSelected={selectedPlaylist?.id === playlist.id}
               />
             </div>
           ))}

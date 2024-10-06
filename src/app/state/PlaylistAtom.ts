@@ -1,8 +1,8 @@
 import { atom } from "recoil";
 
-export const selectedPlaylistAtom = atom<number | null>({
+export const selectedPlaylistAtom = atom<{ id: number | null; image: string | null }>({
   key: "selectedPlaylistAtom",
-  default: null,
+  default: { id: null, image: null },
 });
 
-console.log(selectedPlaylistAtom);
+// Remove the console.log statement
