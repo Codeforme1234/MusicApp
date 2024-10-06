@@ -1,8 +1,9 @@
 // Player.tsx
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
+import { playbackState } from "../state/PlayAndPause";
 import {
   shuffle,
   previous,
@@ -40,7 +41,7 @@ interface Song {
 }
 
 const Player = () => {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useRecoilState(playbackState);
   const [volume, setVolume] = useState(0.2);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);

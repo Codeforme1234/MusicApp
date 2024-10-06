@@ -21,7 +21,7 @@ import {
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
 import { playPauseAudio, changeVolume } from "./AudioControl";
-
+import { playbackState } from "../state/PlayAndPause";
 interface AdvancedMobilePlayerProps {
   onClose: () => void;
 }
@@ -33,10 +33,10 @@ interface AdvancedMobilePlayerProps {
 
 const AdvancedMobilePlayer: React.FC<AdvancedMobilePlayerProps> = ({
   onClose,
-  isExpanded, // Add this prop
+  isExpanded,
 }) => {
   const [currentSong, setCurrentSong] = useRecoilState(songState);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useRecoilState(playbackState);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isShuffleActive, setIsShuffleActive] = useState(false);

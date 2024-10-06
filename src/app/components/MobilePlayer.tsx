@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
 import Image from "next/image";
 import { truncateText } from "../Utils/TruncateText";
@@ -9,6 +9,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import AdvancedMobilePlayer from "./AdvanceMobilePlayer";
 import { playPauseAudio } from "./AudioControl";
+import { playbackState } from "../state/PlayAndPause";
 
 interface Song {
   image: string;
@@ -18,12 +19,11 @@ interface Song {
 }
 
 const MobilePlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useRecoilState(playbackState);
   const [isLiked, setIsLiked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const songData = useRecoilValue(songState);
-  const setSongData = useSetRecoilState(songState);
   const currentSong: Song = songData.currentSong || {
     image: "",
     url: "",
@@ -56,10 +56,7 @@ const MobilePlayer = () => {
 
   const handlePlayPause = () => {
     playPauseAudio(audioRef, isPlaying, setIsPlaying);
-    setSongData((prevState) => ({
-      ...prevState,
-      isPlaying: !isPlaying,
-    }));
+    // Remove the setSongData call as we're now using the global playbackState
   };
 
   const openAdvancedPlayer = () => {
