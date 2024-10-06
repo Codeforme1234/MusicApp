@@ -107,7 +107,7 @@ const AdvancedMobilePlayer: React.FC<AdvancedMobilePlayerProps> = ({
       .padStart(2, "0")}`;
 
   return (
-    <div className={`fixed inset-0 bg-black justify-between p-4 px-6 text-white z-50 flex flex-col advanced-player-transition ${isExpanded ? 'advanced-player-open' : 'advanced-player-closed'}`}>
+    <div className={`fixed inset-0 bg-black opacity-75 justify-between p-4 px-6 text-white z-50 flex flex-col advanced-player-transition ${isExpanded ? 'advanced-player-open' : 'advanced-player-closed'}`}>
       <audio ref={audioRef} src={currentSong.currentSong?.url || ""} />
       <div className="p-4 flex justify-between">
         <button onClick={onClose} className="text-2xl">

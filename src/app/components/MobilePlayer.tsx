@@ -95,7 +95,7 @@ const MobilePlayer = () => {
       <div className={`bg-[#222222] text-white p-2 rounded-lg`}>
         <audio ref={audioRef} src={currentSong?.url || ""} />
         <div className="flex justify-between items-center">
-          <div className="flex items-center cursor-pointer space-x-2" onClick={openAdvancedPlayer}>
+          <div className="flex items-center cursor-pointer w-[70%] space-x-2" onClick={openAdvancedPlayer}>
             <Image
               src={currentSong.image}
               alt="Album Art"
