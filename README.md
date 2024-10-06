@@ -10,6 +10,28 @@ This is a music player web application built using **Next.js** for the frontend,
 - **Framer Motion**: To give animations in opening and closing of tabs.
 - **Tailwind CSS**: For styling the UI with a utility-first approach.
 
+## Images
+
+Desktop View
+
+![Desktop Views](./src/public/Readme/D1.png)
+![Desktop Views](./src/public/Readme/D2.png)
+![Desktop Views](./src/public/Readme/D3.png)
+
+Tablet View
+
+![Tablet View](./src/public/Readme/P1.png)
+![Tablet View](./src/public/Readme/P2.png)
+![Tablet View](./src/public/Readme/P3.png)
+![Tablet View](./src/public/Readme/P4.png)
+
+Mobile View
+
+![Mobile View](./src/public/Readme/M1.png)
+![Mobile View](./src/public/Readme/M2.png)
+![Mobile View](./src/public/Readme/M3.png)
+![Mobile View](./src/public/Readme/M4.png)
+
 ## Features
 
 - **Audio Playback**: Plays songs with controls for play/pause and volume.
