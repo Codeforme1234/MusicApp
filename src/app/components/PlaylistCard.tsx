@@ -32,8 +32,13 @@ const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
   };
 
   return (
-    <div className="flex flex-col cursor-pointer justify-center" onClick={handleClick}>
-      <div className={`h-[10rem] md:h-[12rem] rounded-lg hover:border-2 hover:border-green-500 aspect-square ${isSelected ? 'border-2 border-green-500' : ''}`}>
+    <div
+      className="flex flex-col cursor-pointer justify-center"
+      onClick={handleClick}
+    >
+      <div
+        className={`relative h-[10rem] md:h-[12rem] rounded-lg  aspect-square `}
+      >
         {imageUrl && (
           <Image
             className="aspect-square object-cover rounded-lg"
@@ -43,6 +48,13 @@ const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
             alt={title}
           />
         )}
+        <div
+          className={`absolute inset-0 rounded-lg transition-opacity duration-200 ${
+            isSelected
+              ? "bg-black bg-opacity-40"
+              : "bg-black bg-opacity-0 hover:bg-opacity-20"
+          }`}
+        ></div>
       </div>
       <div className="text-sm mt-2">{title}</div>
     </div>

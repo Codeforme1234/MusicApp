@@ -15,6 +15,7 @@ import { CollapsedSidebar } from "../state/Collapse";
 import { useRecoilState } from "recoil";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import CurrentSong from "./CurrentSong";
 
 interface SidebarProps {}
 
@@ -75,6 +76,9 @@ const Sidebar: React.FC<SidebarProps> = () => {
       </div>
       <SidebarItems title="Features" items={featuresItems} />
       <SidebarItems title="Library" items={libraryItems} />
+      <div className=" hidden lg:block absolute left-0 bottom-0">
+        <CurrentSong />
+      </div>
     </div>
   );
 };

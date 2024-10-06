@@ -66,16 +66,21 @@ const Player = () => {
 
       audioRef.current.addEventListener("loadedmetadata", updateDuration);
       audioRef.current.addEventListener("timeupdate", updateCurrentTime);
-      audioRef.current
-        .play()
-        .catch((error) => console.error("Error playing audio:", error));
+
+      if (isPlaying) {
+        audioRef.current
+          .play()
+          .catch((error) => console.error("Error playing audio:", error));
+      } else {
+        audioRef.current.pause();
+      }
 
       return () => {
         audioRef.current?.removeEventListener("loadedmetadata", updateDuration);
         audioRef.current?.removeEventListener("timeupdate", updateCurrentTime);
       };
     }
-  }, [currentSong.url]);
+  }, [currentSong.url, isPlaying, volume]);
 
   const handlePlayPause = () => {
     playPauseAudio(audioRef, isPlaying, setIsPlaying);
@@ -124,11 +129,11 @@ const Player = () => {
       .padStart(2, "0")}`;
 
   return (
-    <div className="text-white ps-5  w-screen md:flex opacity-85 items-center pb-3 pt-2 bg-black">
+    <div className="text-white ps-5  w-screen h-full flex opacity-85 items-center pb-3 pt-2 bg-black">
       <audio ref={audioRef} src={currentSong?.url || ""} />
       <div className="md:flex w-full">
         <div className="hidden md:flex md:flex-row flex-col md:w-[20%] w-[5%] items-center gap-4">
-          <div className="md:block hidden">
+          <div className="lg:block hidden">
             <div className="text-md uppercase">{truncateText(currentSong.title, 10)}</div>
             <div className="text-xs opacity-75">{truncateText(currentSong.artist, 15)}</div>
           </div>
@@ -214,10 +219,12 @@ const Player = () => {
               className="w-full h-1"
             />
           </div>
+          <div className="hidden lg:block">
           <div className="flex ms-3 space-x-3">
             <Image src={mic} alt="mic" height={25} width={25} />
             <Image src={desktop} alt="desktop" height={25} width={25} />
             <Image src={share} alt="share" height={21} width={21} />
+          </div>
           </div>
         </div>
       </div>

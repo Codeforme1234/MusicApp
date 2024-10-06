@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { MusicCard, PlaylistCard } from "../components";
-import useMusicAPI from "../API/FetchMusic";
+import createMusicAPI from "../API/FetchMusic";
 import { fetchPixabayImageURL } from "../API/ImageApi";
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
@@ -10,6 +10,8 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { selectedPlaylistAtom } from "../state/PlaylistAtom";
 import { selectedSongAtom } from "../state/SelectedSong";
+import { shuffleArray } from "../Utils/ShuffleArray";
+import { playbackState } from "../state/PlayAndPause";
 
 interface SuggestionProps {
   searchQuery: string;
@@ -25,9 +27,17 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const [selectedPlaylist, setSelectedPlaylist] = useRecoilState(selectedPlaylistAtom);
   const [selectedSong, setSelectedSong] = useRecoilState(selectedSongAtom);
   const [selectedSongIndex, setSelectedSongIndex] = useState<number | null>(null);
+  const [shuffledSongs, setShuffledSongs] = useState<Song[]>([]);
+  const [newReleases, setNewReleases] = useState<Song[]>([]);
+  const [recommended, setRecommended] = useState<Song[]>([]);
+  const [favorites, setFavorites] = useState<Song[]>([]);
+  const [trending, setTrending] = useState<Song[]>([]);
+  const [isPlaying, setIsPlaying] = useRecoilState(playbackState);
+  const [isApiLoading, setIsApiLoading] = useState(true);
 
   const handleMusicCardClick = (song: Song) => {
     setSelectedSong(song);
+    setIsPlaying(true); // Set playback state to true when a song is clicked
     setSongData((prevState) => {
       // Check if the last song in the playlist is the same as the current song
       const lastSong = prevState.playlist[prevState.playlist.length - 1];
@@ -77,22 +87,45 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   );
 
   const handleSongsFetched = useCallback((fetchedSongs: Song[]) => {
+    const totalSongs = fetchedSongs.length;
+    const songsPerCategory = Math.floor(totalSongs / 4);
+
     setSongs(fetchedSongs);
+    setNewReleases(shuffleArray(fetchedSongs.slice(0, songsPerCategory)));
+    setRecommended(shuffleArray(fetchedSongs.slice(songsPerCategory, songsPerCategory * 2)));
+    setFavorites(shuffleArray(fetchedSongs.slice(songsPerCategory * 2, songsPerCategory * 3)));
+    setTrending(shuffleArray(fetchedSongs.slice(songsPerCategory * 3)));
   }, []);
 
-  const { loading: apiLoading } = useMusicAPI({
+  const { fetchPlaylists, fetchSongs } = createMusicAPI({
     onPlaylistsFetched: handlePlaylistsFetched,
     onSongsFetched: handleSongsFetched,
   });
 
   useEffect(() => {
-    if (!apiLoading && songs.length > 0 && playlists.length > 0) {
+    const fetchData = async () => {
+      setIsApiLoading(true);
+      try {
+        const [playlistsData, songsData] = await Promise.all([
+          fetchPlaylists(),
+          fetchSongs()
+        ]);
+        // Handle the fetched data here if needed
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsApiLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run only once on mount
+
+  useEffect(() => {
+    if (!isApiLoading && songs.length > 0 && playlists.length > 0) {
       setIsLoading(false);
     }
-  }, [apiLoading, songs, playlists]);
-
-  const songsToShow = showAllSongs ? songs : songs.slice(0, 6);
-  const playlistsToShow = showAllPlaylists ? playlists : playlists.slice(0, 6);
+  }, [isApiLoading, songs, playlists]);
 
   const renderSkeletonLoader = () => (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
@@ -129,6 +162,37 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
     return <div className="mt-6 pb-20">{renderSkeletonLoader()}</div>;
   }
 
+  const renderSongRow = (title: string, songsToRender: Song[]) => (
+    <div>
+      <div className="flex justify-between items-end mt-8">
+        <h1 className="text-white text-xl font-bold">{title}</h1>
+        <button
+          className="text-gray-400 text-sm font-semibold"
+          onClick={() => setShowAllSongs(!showAllSongs)}
+        >
+          {showAllSongs ? "Show less" : "See all"}
+        </button>
+      </div>
+
+      <div className="text-white overflow-x-auto w-full no-scrollbar flex gap-4">
+        {songsToRender.slice(0, showAllSongs ? songsToRender.length : 5).map((song, index) => (
+          <div
+            key={index}
+            className="flex-shrink-0 md:w-52 w-40"
+          >
+            <MusicCard 
+              {...song} 
+              isSelected={selectedSong?.title === song.title && selectedSong?.artist === song.artist}
+              onSelect={() => handleMusicCardClick(song)}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const playlistsToShow = playlists.slice(0, 5); // Adjust the number as needed
+
   return (
     <div className="mt-6 h-full pb-20">
       {/* Playlists Section */}
@@ -145,7 +209,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
       <div className="text-white mt-4">
         <div className="overflow-x-auto flex gap-4 no-scrollbar">
           {playlistsToShow.map((playlist, index) => (
-            <div key={index}>
+            <div key={index} className="flex-shrink-0">
               <PlaylistCard 
                 id={playlist.id}
                 title={playlist.name} 
@@ -156,33 +220,11 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
         </div>
       </div>
 
-      {/* Songs Section */}
-      <div>
-        <div className="flex justify-between items-end mt-8">
-          <h1 className="text-white text-xl font-bold">New releases for you</h1>
-          <button
-            className="text-gray-400 text-sm font-semibold"
-            onClick={() => setShowAllSongs(!showAllSongs)}
-          >
-            {showAllSongs ? "Show less" : "See all"}
-          </button>
-        </div>
-
-        <div className="text-white overflow-x-auto w-full no-scrollbar flex gap-4">
-          {songsToShow.map((song, index) => (
-            <div
-              key={index}
-              className="flex-shrink-0 md:w-52 w-40"
-            >
-              <MusicCard 
-                {...song} 
-                isSelected={selectedSong?.title === song.title && selectedSong?.artist === song.artist}
-                onSelect={() => handleMusicCardClick(song)}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* Songs Sections */}
+      {renderSongRow("New releases for you", newReleases)}
+      {renderSongRow("Recommended for you", recommended)}
+      {renderSongRow("Your favorites", favorites)}
+      {renderSongRow("Trending now", trending)}
     </div>
   );
 };

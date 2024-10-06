@@ -14,7 +14,7 @@ const CurrentSong = () => {
   const currentSong = songData.currentSong;
 
   return (
-    <div className={`w-full  h-full mb-[7rem] p-2  `}>
+    <div className={`w-full`}>
       {currentSong ? (
         <Image
           src={currentSong.image}

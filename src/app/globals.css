@@ -14,6 +14,7 @@
 
 .html .body {
   height: 100%;
+  background-color: black;;
 }
 
 /* Add these new styles for mobile sidebar and playlist transitions */

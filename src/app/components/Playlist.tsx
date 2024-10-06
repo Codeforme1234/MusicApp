@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import MusicCard from "./MusicCard";
 import { notification, profile, downarrow, right } from "@/public";
-import useMusicAPI from "../API/FetchMusic";
+import createMusicAPI from "../API/FetchMusic";
 import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
 import { reverseArray } from "../Utils/ReverseArr";
@@ -10,6 +10,7 @@ import { CollapsedPlaylist } from "../state/Collapse";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { selectedSongAtom } from "../state/SelectedSong";
+
 interface PlaylistProp {}
 
 interface Playlist {
@@ -32,22 +33,43 @@ const Playlist: React.FC<PlaylistProp> = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedSong, setSelectedSong] = useRecoilState(selectedSongAtom);
 
-  function handleCollapsedClick() {
-    setCollapsed(!collapsed);
-  }
-  const profileURL =
-    "https://media.licdn.com/dms/image/v2/D5603AQGf0VI5kjmT6g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1719045170102?e=1730937600&v=beta&t=7i_mVXFx4nWrtnO-_zJKCMSkSKYKgcg4AlWQvK-oiJk";
-  useMusicAPI({
-    onPlaylistsFetched: (playlists) => {
-      setPlaylists(playlists);
-      setIsLoading(false);
-    },
-    onSongsFetched: setSongs,
+  const handlePlaylistsFetched = useCallback((fetchedPlaylists: Playlist[]) => {
+    setPlaylists(fetchedPlaylists);
+    setIsLoading(false);
+  }, []);
+
+  const handleSongsFetched = useCallback((fetchedSongs: Song[]) => {
+    setSongs(fetchedSongs);
+  }, []);
+
+  const { fetchPlaylists, fetchSongs } = createMusicAPI({
+    onPlaylistsFetched: handlePlaylistsFetched,
+    onSongsFetched: handleSongsFetched,
     type: "popular",
     page: 1,
     count: 5,
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        await Promise.all([fetchPlaylists(), fetchSongs()]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run only once on mount
+
+  function handleCollapsedClick() {
+    setCollapsed(!collapsed);
+  }
+  const profileURL =
+    "https://media.licdn.com/dms/image/v2/D5603AQGf0VI5kjmT6g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1719045170102?e=1730937600&v=beta&t=7i_mVXFx4nWrtnO-_zJKCMSkSKYKgcg4AlWQvK-oiJk";
   const reversedPlaylist = reverseArray(selectedSongs.playlist);
 
   const handleSongSelect = useCallback(

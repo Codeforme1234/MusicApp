@@ -38,18 +38,18 @@ const Dashboard = () => {
       <SongStateManager />
       <div className="flex flex-row relative w-full h-full overflow-hidden">
         <div
-          className={`w-[80%] md:w-[20%] fixed md:relative h-full z-20 transition-transform duration-300 ease-in-out ${
-            openSidebar ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+          className={`w-[80%] lg:w-[20%] fixed lg:relative h-full z-20 transition-transform duration-300 ease-in-out ${
+            openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
         >
           <Sidebar />
         </div>
-        <div className="flex-grow overflow-hidden">
+        <div className="flex overflow-hidden">
           <Center />
         </div>
         <div
-          className={`w-[80%] md:w-[27%] fixed md:relative right-0 h-full z-20 transition-transform duration-300 ease-in-out ${
-            openPlaylist ? "translate-x-0" : "translate-x-full md:translate-x-0"
+          className={`w-[80%] lg:w-[27%] fixed lg:relative right-0 h-full z-20 transition-transform duration-300 ease-in-out ${
+            openPlaylist ? "translate-x-0" : "translate-x-full lg:translate-x-0"
           }`}
         >
           {selectedPlaylist.id !== null ? (

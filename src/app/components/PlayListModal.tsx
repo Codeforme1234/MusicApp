@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import MusicCard from "./MusicCard";
-import { notification, profile, downarrow, right } from "@/public";
-import useMusicAPI from "../API/FetchMusic";
+import { right } from "@/public";
+import createMusicAPI from "../API/FetchMusic";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { songState } from "../state/SongAtom";
 import { CollapsedPlaylist } from "../state/Collapse";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Song } from "../Utils/interfaces";
 import { selectedPlaylistAtom } from "../state/PlaylistAtom";
-import { Playlist } from "../Utils/interfaces";
 import { selectedSongAtom } from "../state/SelectedSong";
 
 interface PlayListModalProps {
@@ -24,43 +23,41 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPlaylist, setSelectedPlaylist] =
     useRecoilState(selectedPlaylistAtom);
-  const [selectedSongIndex, setSelectedSongIndex] = useState<number | null>(
-    null
-  );
   const [selectedSong, setSelectedSong] = useRecoilState(selectedSongAtom);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const PlaylistSkeleton = () => (
-    <div className="mt-4">
-      <Skeleton height={200} width="100%" className="mb-4" />
-      <Skeleton width={150} height={24} className="mb-4" />
-      {[...Array(5)].map((_, index) => (
-        <div key={index} className="flex items-center mb-4">
-          <Skeleton width={50} height={50} className="mr-4" />
-          <div>
-            <Skeleton width={150} height={20} className="mb-2" />
-            <Skeleton width={100} height={16} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  const fetchSongs = useCallback(() => {
+    if (!hasMore) return;
+
+    const { fetchSongs } = createMusicAPI({
+      onPlaylistsFetched: () => {},
+      onSongsFetched: (fetchedSongs) => {
+        setSongs((prevSongs) => [...prevSongs, ...fetchedSongs]);
+        setIsLoading(false);
+        setHasMore(fetchedSongs.length === 10);
+      },
+      selectedPlaylist:
+        selectedPlaylist.id !== null
+          ? { id: selectedPlaylist.id, name: `Playlist ${selectedPlaylist.id}` }
+          : null,
+      count: 10,
+      page: page,
+    });
+
+    fetchSongs();
+  }, [selectedPlaylist, page, hasMore]);
 
   useEffect(() => {
     setIsLoading(true);
+    setSongs([]);
+    setPage(1);
+    setHasMore(true);
   }, [selectedPlaylist]);
 
-  useMusicAPI({
-    onPlaylistsFetched: () => {},
-    onSongsFetched: (fetchedSongs) => {
-      setSongs(fetchedSongs);
-      setIsLoading(false);
-    },
-    selectedPlaylist:
-      selectedPlaylist.id !== null
-        ? { id: selectedPlaylist.id, name: `Playlist ${selectedPlaylist.id}` }
-        : null,
-    count: 10,
-  });
+  useEffect(() => {
+    fetchSongs();
+  }, [fetchSongs, page]);
 
   function handleCollapsedClick() {
     setCollapsed(!collapsed);
@@ -75,7 +72,31 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
     }));
   };
 
-  if (isLoading) {
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop === clientHeight && !isLoading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+  const PlaylistSkeleton = () => (
+    <div className="mt-4">
+      <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        <Skeleton height={200} width="100%" className="mb-4" />
+        <Skeleton width={150} height={24} className="mb-4" />
+        {[...Array(5)].map((_, index) => (
+          <div key={index} className="flex items-center mb-4">
+            <Skeleton width={50} height={50} className="mr-4" />
+            <div>
+              <Skeleton width={150} height={20} className="mb-2" />
+              <Skeleton width={100} height={16} />
+            </div>
+          </div>
+        ))}
+      </SkeletonTheme>
+    </div>
+  );
+
+  if (isLoading && songs.length === 0) {
     return (
       <div className="bg-[#0a0a0a] h-full w-full pt-8 px-6 overflow-hidden flex flex-col">
         <PlaylistSkeleton />
@@ -101,7 +122,10 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
           </div>
         </div>
       </div>
-      <div className="flex-grow no-scrollbar overflow-y-auto">
+      <div
+        className="flex-grow no-scrollbar overflow-y-auto"
+        onScroll={handleScroll}
+      >
         {selectedPlaylist.image && (
           <div className="mt-4">
             <Image
@@ -125,7 +149,7 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
             <div className="flex flex-col text-white">
               {songs.map((song, index) => (
                 <MusicCard
-                  key={index}
+                  key={`${song.title}-${song.artist}-${index}`}
                   image={song.image}
                   title={song.title}
                   artist={song.artist}
@@ -140,6 +164,7 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
             </div>
           </div>
         </div>
+        {isLoading && <PlaylistSkeleton />}
       </div>
     </div>
   );

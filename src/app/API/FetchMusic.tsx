@@ -21,16 +21,19 @@ interface APIComponentProps {
   count?: number;
 }
 
-const useMusicAPI = ({
+interface MusicAPIResult {
+  fetchPlaylists: () => Promise<void>;
+  fetchSongs: () => Promise<void>;
+}
+
+const createMusicAPI = ({
   onPlaylistsFetched,
   onSongsFetched,
   selectedPlaylist,
   type = "",
   page = 1,
-  count = 5,
-}: APIComponentProps) => {
-  const [loading, setLoading] = useState<boolean>(true);
-
+  count = 30,
+}: APIComponentProps): MusicAPIResult => {
   const fetchPlaylists = async () => {
     try {
       const response = await fetch(`https://api-v2.hearthis.at/categories/`);
@@ -42,13 +45,10 @@ const useMusicAPI = ({
       onPlaylistsFetched(fetchedPlaylists);
     } catch (error) {
       console.error("Error fetching playlists:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const fetchSongs = async () => {
-    setLoading(true);
     let url = `https://api-v2.hearthis.at/feed/?page=${page}&count=${count}`;
     if (type) {
       url = `https://api-v2.hearthis.at/feed/?type=${type}&page=${page}&count=${count}`;
@@ -69,21 +69,10 @@ const useMusicAPI = ({
       onSongsFetched(fetchedSongs);
     } catch (error) {
       console.error("Error fetching songs:", error);
-    } finally {
-      setLoading(false);
     }
   };
-  
 
-  useEffect(() => {
-    fetchPlaylists();
-  }, []);
-
-  useEffect(() => {
-    fetchSongs();
-  }, []);
-
-  return { loading };
+  return { fetchPlaylists, fetchSongs };
 };
 
-export default useMusicAPI;
+export default createMusicAPI;
