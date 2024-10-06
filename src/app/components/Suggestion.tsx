@@ -6,8 +6,9 @@ import { fetchPixabayImageURL } from "../API/ImageApi";
 import { songState } from "../state/SongAtom";
 import { useRecoilState } from "recoil";
 import { Song, Playlist } from "../Utils/interfaces";
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { selectedPlaylistAtom } from "../state/PlaylistAtom";
 
 interface SuggestionProps {
   searchQuery: string;
@@ -16,11 +17,11 @@ interface SuggestionProps {
 const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(null);
   const [showAllSongs, setShowAllSongs] = useState(false);
   const [showAllPlaylists, setShowAllPlaylists] = useState(false);
   const [songData, setSongData] = useRecoilState(songState);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useRecoilState(selectedPlaylistAtom);
 
   const handleMusicCardClick = (song: Song) => {
     setSongData((prevState) => ({
@@ -33,20 +34,30 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   };
 
   const handlePlaylistClick = (playlist: Playlist) => {
-    setSelectedPlaylist(playlist);
+    setSelectedPlaylistId(playlist.id);
   };
 
-  const fetchImageForPlaylist = useCallback(async (playlist: Playlist): Promise<Playlist> => {
-    const imageUrl = await fetchPixabayImageURL(playlist.name);
-    return { ...playlist, image: imageUrl || '' } as Playlist & { image: string };
-  }, []);
+  const fetchImageForPlaylist = useCallback(
+    async (playlist: Playlist): Promise<Playlist> => {
+      const imageUrl = await fetchPixabayImageURL(playlist.name);
+      return { ...playlist, image: imageUrl || "" } as Playlist & {
+        image: string;
+      };
+    },
+    []
+  );
 
-  const handlePlaylistsFetched = useCallback(async (fetchedPlaylists: Playlist[]) => {
-    const playlistsWithImages = await Promise.all(
-      fetchedPlaylists.map(fetchImageForPlaylist)
-    );
-    setPlaylists(playlistsWithImages);
-  }, [fetchImageForPlaylist]);
+  const handlePlaylistsFetched = useCallback(
+    async (fetchedPlaylists: Playlist[]) => {
+      // Remove the first two playlists
+      const filteredPlaylists = fetchedPlaylists.slice(2);
+      const playlistsWithImages = await Promise.all(
+        filteredPlaylists.map(fetchImageForPlaylist)
+      );
+      setPlaylists(playlistsWithImages);
+    },
+    [fetchImageForPlaylist]
+  );
 
   const handleSongsFetched = useCallback((fetchedSongs: Song[]) => {
     setSongs(fetchedSongs);
@@ -55,7 +66,6 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
   const { loading: apiLoading } = useMusicAPI({
     onPlaylistsFetched: handlePlaylistsFetched,
     onSongsFetched: handleSongsFetched,
-    selectedPlaylist,
   });
 
   useEffect(() => {
@@ -64,11 +74,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
     }
   }, [apiLoading, songs, playlists]);
 
-  const filteredSongs = songs.filter((song) =>
-    song.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const songsToShow = showAllSongs ? filteredSongs : filteredSongs.slice(0, 6);
+  const songsToShow = showAllSongs ? songs : songs.slice(0, 6);
   const playlistsToShow = showAllPlaylists ? playlists : playlists.slice(0, 6);
 
   const renderSkeletonLoader = () => (
@@ -110,7 +116,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
     <div className="mt-6 h-full pb-20">
       {/* Playlists Section */}
       <div className="flex justify-between items-end">
-        <h1 className="text-white text-2xl font-bold">Hello, Devesh</h1>
+        <h1 className="text-white text-2xl font-bold">Your Playlists</h1>
         <button
           className="text-gray-400 text-sm font-semibold"
           onClick={() => setShowAllPlaylists(!showAllPlaylists)}
@@ -122,8 +128,14 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
       <div className="text-white mt-4">
         <div className="overflow-x-auto flex gap-4 no-scrollbar">
           {playlistsToShow.map((playlist, index) => (
-            <div key={index} onClick={() => handlePlaylistClick(playlist)}>
-              <PlaylistCard title={playlist.name} />
+            <div
+              key={index}
+              onClick={() => handlePlaylistClick(playlist)}
+            >
+              <PlaylistCard 
+                title={playlist.name} 
+                isSelected={selectedPlaylistId === playlist.id}
+              />
             </div>
           ))}
         </div>
@@ -132,9 +144,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
       {/* Songs Section */}
       <div>
         <div className="flex justify-between items-end mt-8">
-          <h1 className="text-white text-xl font-bold">
-            {selectedPlaylist ? selectedPlaylist.name : "New releases for you"}
-          </h1>
+          <h1 className="text-white text-xl font-bold">New releases for you</h1>
           <button
             className="text-gray-400 text-sm font-semibold"
             onClick={() => setShowAllSongs(!showAllSongs)}

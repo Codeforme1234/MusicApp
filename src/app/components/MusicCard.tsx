@@ -27,7 +27,7 @@ const MusicCard: React.FC<MusicItemProps> = ({ image, title, artist, description
       </div>
       <div className="flex flex-col">
 
-      <div className={`text-sm font-medium1 ${timeAgo ? 'text-[12px] w-[110px]':''}`}>{truncateText(title)}</div>
+      <div className={`text-sm font-medium1 ${timeAgo ? 'text-[12px] w-[110px]':''}`}>{truncateText(title, 10)}</div>
       <div className="text-xs font-light text-wrap">{truncateText(artist, 10)}</div>
       </div>
         </div>

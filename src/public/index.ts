@@ -40,10 +40,13 @@ import forward from "./forward-3-svgrepo-com.svg";
 import backward from "./backward-3-svgrepo-com.svg";
 import queueIcon from "./queue-svgrepo-com.svg";
 import repeat from "./repeat-svgrepo-com.svg";
-import mainplay from "./newplay.svg"
-import mainpause from "./newpause.svg"
+import mainplay from "./newplay.svg";
+import mainpause from "./newpause.svg";
+import mic from "./mic-svgrepo-com.svg";
+import add from "./add-square-svgrepo-com.svg";
 
 export {
+  add,
   right,
   device,
   share,
@@ -87,5 +90,6 @@ export {
   queueIcon,
   repeat,
   mainplay,
-  mainpause
+  mainpause,
+  mic,
 };

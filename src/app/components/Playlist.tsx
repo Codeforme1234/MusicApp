@@ -7,8 +7,8 @@ import { useRecoilState } from "recoil";
 import { songState } from "../state/SongAtom";
 import { reverseArray } from "../Utils/ReverseArr";
 import { CollapsedPlaylist } from "../state/Collapse";
-import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface PlaylistProp {}
 
@@ -54,7 +54,7 @@ const Playlist: React.FC<PlaylistProp> = () => {
   }
 
   return (
-    <div className="bg-[#0a0a0a] h-full w-full py-8 px-6 pb-10 overflow-hidden flex flex-col">
+    <div className="bg-[#0a0a0a] h-full w-full pt-8 px-6  overflow-hidden flex flex-col">
       <div className="flex justify-between items-center">
         <div className="flex justify-center items-center space-x-3">
           <Image
@@ -77,14 +77,15 @@ const Playlist: React.FC<PlaylistProp> = () => {
         </div>
       </div>
       <div className="flex-grow no-scrollbar overflow-y-auto">
-        <div className="mb-4">
-          <div className="flex justify-between items-end mt-4">
-            <h1 className="text-white text-xl font-bold">Recently Played</h1>
-            <button className="text-gray-400 text-sm font-semibold">
-              See all
-            </button>
-          </div>
-
+        <div className="flex justify-between  items-end mt-4">
+          <h1 className="text-white font-semibold text-xl md:text-sm">
+            Recently Played
+          </h1>
+          <button className="text-gray-400 text-sm font-semibold">
+            See all
+          </button>
+        </div>
+        <div className="mb-4 max-h-[35%] overflow-auto no-scrollbar">
           <div className="mt-2">
             <div className="flex flex-col text-white">
               {reversedPlaylist.map((song: Song, index: number) => (
@@ -99,13 +100,13 @@ const Playlist: React.FC<PlaylistProp> = () => {
             </div>
           </div>
         </div>
-
-        <div className="mb-4">
-          <div className="flex justify-between items-end mt-4">
-            <h1 className="text-white text-xl font-bold">My Playlist</h1>
-            <button className="text-gray-400 text-sm font-semibold">See all</button>
-          </div>
-
+        <div className="flex justify-between mb-2 items-end mt-4">
+          <h1 className="text-white text-sm font-semibold">My Playlist</h1>
+          <button className="text-gray-400 text-sm font-semibold">
+            See all
+          </button>
+        </div>
+        <div className="mb-4 max-h-[35%] overflow-y-auto no-scrollbar">
           <div className="mt-2">
             <div className="flex flex-col text-white">
               {songs.map((song, index) => (
@@ -120,6 +121,9 @@ const Playlist: React.FC<PlaylistProp> = () => {
             </div>
           </div>
         </div>
+        <div className="bg-white text-black font-semibold text-sm text-center p-3 rounded-md">
+          Create new Playlist
+        </div>
       </div>
     </div>
   );
@@ -128,41 +132,40 @@ const Playlist: React.FC<PlaylistProp> = () => {
 const PlaylistSkeleton: React.FC = () => {
   return (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
-    <div className="bg-[#0a0a0a] h-full w-full py-8 px-6 pb-10 overflow-hidden flex flex-col">
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex justify-center items-center space-x-3">
-          
-          <Skeleton circle width={40} height={40} />
-          <Skeleton width={80} height={24} />
-        </div>
-        <div className="flex gap-2">
-          <Skeleton width={24} height={24} />
-          <Skeleton width={24} height={24} />
-          <Skeleton width={24} height={24} className="lg:hidden" />
-        </div>
-      </div>
-      <div className="flex-grow no-scrollbar overflow-y-auto">
-        {['Recently Played', 'My Playlist'].map((section, index) => (
-          <div key={index} className="mb-4">
-            <div className="flex justify-between items-end mt-4">
-              <Skeleton width={160} height={32} />
-              <Skeleton width={64} height={24} />
-            </div>
-            <div className="mt-2">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="flex items-center space-x-4 mb-4">
-                  <Skeleton width={48} height={48} />
-                  <div className="flex-1">
-                    <Skeleton width="75%" height={20} className="mb-2" />
-                    <Skeleton width="50%" height={16} />
-                  </div>
-                </div>
-              ))}
-            </div>
+      <div className="bg-[#0a0a0a] h-full w-full py-8 px-6 pb-10 overflow-hidden flex flex-col">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-center items-center space-x-3">
+            <Skeleton circle width={40} height={40} />
+            <Skeleton width={80} height={24} />
           </div>
-        ))}
+          <div className="flex gap-2">
+            <Skeleton width={24} height={24} />
+            <Skeleton width={24} height={24} />
+            <Skeleton width={24} height={24} className="lg:hidden" />
+          </div>
+        </div>
+        <div className="flex-grow no-scrollbar overflow-y-auto">
+          {["Recently Played", "My Playlist"].map((section, index) => (
+            <div key={index} className="mb-4">
+              <div className="flex justify-between items-end mt-4">
+                <Skeleton width={160} height={32} />
+                <Skeleton width={64} height={24} />
+              </div>
+              <div className="mt-2">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="flex items-center space-x-4 mb-4">
+                    <Skeleton width={48} height={48} />
+                    <div className="flex-1">
+                      <Skeleton width="75%" height={20} className="mb-2" />
+                      <Skeleton width="50%" height={16} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     </SkeletonTheme>
   );
 };
