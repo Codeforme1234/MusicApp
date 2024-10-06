@@ -33,6 +33,7 @@ import { truncateText } from "../Utils/TruncateText";
 import { motion } from "framer-motion";
 import { CollapsedSongDetails } from "../state/Collapse";
 import { playPauseAudio, changeVolume } from "./AudioControl";
+import { ImageWithTooltip } from "../Utils/ToolTipProp";
 
 interface Song {
   url: string;
@@ -48,6 +49,7 @@ const Player = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [liked, setLiked] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [previousVolume, setPreviousVolume] = useState(0.2);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const songData = useRecoilValue(songState);
@@ -123,6 +125,16 @@ const Player = () => {
     }
   };
 
+  const handleMute = () => {
+    if (isMuted) {
+      setVolume(previousVolume);
+    } else {
+      setPreviousVolume(volume);
+      setVolume(0);
+    }
+    setIsMuted(!isMuted);
+  };
+
   const formatTime = (time: number) =>
     `${Math.floor(time / 60)}:${Math.floor(time % 60)
       .toString()
@@ -131,44 +143,58 @@ const Player = () => {
   return (
     <div className="text-white ps-5  w-screen h-full flex opacity-85 items-center pb-3 pt-2 bg-black">
       <audio ref={audioRef} src={currentSong?.url || ""} />
-      <div className="md:flex w-full">
-        <div className="hidden md:flex md:flex-row flex-col md:w-[20%] w-[5%] items-center gap-4">
+      <div className="md:flex w-full flex justify-between">
+        <div className="hidden md:flex md:flex-row flex-col w-[16%]  items-center gap-4">
           <div className="lg:block hidden">
-            <div className="text-md uppercase">{truncateText(currentSong.title, 10)}</div>
-            <div className="text-xs opacity-75">{truncateText(currentSong.artist, 15)}</div>
+            <div className="text-md uppercase">
+              {truncateText(currentSong.title, 10)}
+            </div>
+            <div className="text-xs opacity-75">
+              {truncateText(currentSong.artist, 15)}
+            </div>
           </div>
           <button onClick={() => setLiked(!liked)}>
-            <Image
+            <ImageWithTooltip
               src={liked ? likeIcon : heartIcon}
               alt={liked ? "Liked" : "Like"}
               height={23}
               width={23}
             />
           </button>
-          <Image src={add} alt="add" height={23} width={23} />
+          <ImageWithTooltip
+            src={add}
+            alt="Add to playlist"
+            height={23}
+            width={23}
+          />
         </div>
         <div className="lg:w-[60%] w-full flex flex-col">
-          <div className="flex justify-center gap-4 pb-2">
-            <Image
+          <div className="flex justify-center items-center gap-4 pb-2">
+            <ImageWithTooltip
               src={shuffle}
               alt="Shuffle"
               height={20}
               width={20}
               className="me-3"
             />
-            <Image src={backward} alt="Shuffle" height={20} width={20} />
+            <ImageWithTooltip
+              src={backward}
+              alt="Previous"
+              height={20}
+              width={20}
+            />
             <button onClick={handlePlayPause}>
-              <Image
+              <ImageWithTooltip
                 src={isPlaying ? pauseIcon : playIcon}
-                alt="Play/Pause"
+                alt={isPlaying ? "Pause" : "Play"}
                 height={40}
                 width={40}
               />
             </button>
-            <Image src={forward} alt="Shuffle" height={20} width={20} />
-            <Image
+            <ImageWithTooltip src={forward} alt="Next" height={20} width={20} />
+            <ImageWithTooltip
               src={repeat}
-              alt="Shuffle"
+              alt="Repeat"
               height={20}
               width={20}
               className="ms-3"
@@ -200,11 +226,11 @@ const Player = () => {
           </div>
         </div>
         <div className="flex justify-between m-3 p-3 text-lg items-center ">
-          <div className="items-center flex">
-            <button onClick={() => setIsMuted(!isMuted)}>
-              <Image
+          <div className="items-center flex ">
+            <button onClick={handleMute}>
+              <ImageWithTooltip
                 src={isMuted ? muteIcon : volumeIcon}
-                alt="Volume/Mute"
+                alt={isMuted ? "Unmute" : "Mute"}
                 height={30}
                 width={30}
               />
@@ -216,15 +242,25 @@ const Player = () => {
               step="0.01"
               value={volume}
               onChange={handleVolumeChange}
-              className="w-full h-1"
+              className="w-full h-1 "
             />
           </div>
-          <div className="hidden lg:block">
-          <div className="flex ms-3 space-x-3">
-            <Image src={mic} alt="mic" height={25} width={25} />
-            <Image src={desktop} alt="desktop" height={25} width={25} />
-            <Image src={share} alt="share" height={21} width={21} />
-          </div>
+          <div className="hidden xl:block me-7">
+            <div className="flex ms-3 space-x-3">
+              <ImageWithTooltip src={mic} alt="Lyrics" height={25} width={25} />
+              <ImageWithTooltip
+                src={desktop}
+                alt="Connect device"
+                height={25}
+                width={25}
+              />
+              <ImageWithTooltip
+                src={share}
+                alt="Share"
+                height={21}
+                width={21}
+              />
+            </div>
           </div>
         </div>
       </div>

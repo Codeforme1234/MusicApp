@@ -144,8 +144,8 @@ const PlayListModal: React.FC<PlayListModalProps> = ({ onClose }) => {
               : "No playlist selected"}
           </h1>
         </div>
-        <div className="mb-4 ">
-          <div className="mt-2">
+        <div className=" mb-4 ">
+          <div className="mt-2 mb-[80px] md:mb-0">
             <div className="flex flex-col text-white">
               {songs.map((song, index) => (
                 <MusicCard

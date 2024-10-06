@@ -197,7 +197,7 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
     <div className="mt-6 h-full pb-20">
       {/* Playlists Section */}
       <div className="flex justify-between items-end">
-        <h1 className="text-white text-2xl font-bold">Your Playlists</h1>
+        <h1 className="text-white text-2xl font-bold">Hello, Devesh</h1>
         <button
           className="text-gray-400 text-sm font-semibold"
           onClick={() => setShowAllPlaylists(!showAllPlaylists)}
