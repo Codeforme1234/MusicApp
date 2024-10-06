@@ -47,6 +47,7 @@ const Player = () => {
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const songData = useRecoilValue(songState);
@@ -90,6 +91,30 @@ const Player = () => {
       const rect = progressRef.current.getBoundingClientRect();
       audioRef.current.currentTime =
         ((e.clientX - rect.left) / rect.width) * duration;
+    }
+  };
+
+  const handleProgressMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    handleProgressChange(e);
+  };
+
+  const handleProgressMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleProgressMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      handleProgressChange(e);
+    }
+  };
+
+  const handleProgressChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (audioRef.current && progressRef.current) {
+      const rect = progressRef.current.getBoundingClientRect();
+      const newTime = ((e.clientX - rect.left) / rect.width) * duration;
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
   };
 
@@ -146,15 +171,23 @@ const Player = () => {
           </div>
           <div className="md:mx-16 mx-4">
             <div
-              className="h-1 w-full bg-neutral-200 dark:bg-neutral-600 cursor-pointer"
+              className="h-1 w-full bg-neutral-600 cursor-pointer relative"
               onClick={handleProgressClick}
+              onMouseDown={handleProgressMouseDown}
+              onMouseMove={handleProgressMouseMove}
+              onMouseUp={handleProgressMouseUp}
+              onMouseLeave={handleProgressMouseUp}
               ref={progressRef}
             >
               <div
                 className="h-1 bg-blue-500"
                 style={{ width: `${(currentTime / duration) * 100}%` }}
               ></div>
-              <div className="flex justify-between text-sm">
+              <div
+                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full"
+                style={{ left: `${(currentTime / duration) * 100}%` }}
+              ></div>
+              <div className="flex justify-between text-sm mt-1">
                 <p>{formatTime(currentTime)}</p>
                 <p>{formatTime(duration)}</p>
               </div>

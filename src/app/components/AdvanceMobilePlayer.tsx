@@ -42,6 +42,7 @@ const AdvancedMobilePlayer: React.FC<AdvancedMobilePlayerProps> = ({
   const [isShuffleActive, setIsShuffleActive] = useState(false);
   const [isRepeatActive, setIsRepeatActive] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
 
@@ -73,6 +74,30 @@ const AdvancedMobilePlayer: React.FC<AdvancedMobilePlayerProps> = ({
       const rect = progressRef.current.getBoundingClientRect();
       audioRef.current.currentTime =
         ((e.clientX - rect.left) / rect.width) * duration;
+    }
+  };
+
+  const handleProgressMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    handleProgressChange(e);
+  };
+
+  const handleProgressMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleProgressMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      handleProgressChange(e);
+    }
+  };
+
+  const handleProgressChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (audioRef.current && progressRef.current) {
+      const rect = progressRef.current.getBoundingClientRect();
+      const newTime = ((e.clientX - rect.left) / rect.width) * duration;
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
   };
 
@@ -125,13 +150,21 @@ const AdvancedMobilePlayer: React.FC<AdvancedMobilePlayerProps> = ({
         </div>
         <div>
           <div
-            className="h-1 w-full bg-neutral-200 dark:bg-neutral-600 cursor-pointer"
+            className="h-1 w-full bg-neutral-600 cursor-pointer relative"
             onClick={handleProgressClick}
+            onMouseDown={handleProgressMouseDown}
+            onMouseMove={handleProgressMouseMove}
+            onMouseUp={handleProgressMouseUp}
+            onMouseLeave={handleProgressMouseUp}
             ref={progressRef}
           >
             <div
               className="h-1 bg-blue-500"
               style={{ width: `${(currentTime / duration) * 100}%` }}
+            ></div>
+            <div
+              className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full"
+              style={{ left: `${(currentTime / duration) * 100}%` }}
             ></div>
           </div>
           <div className="flex justify-between mt-2">
