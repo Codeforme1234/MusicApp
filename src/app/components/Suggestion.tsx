@@ -76,8 +76,8 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
 
   const handlePlaylistsFetched = useCallback(
     async (fetchedPlaylists: Playlist[]) => {
-      // Remove the first two playlists
-      const filteredPlaylists = fetchedPlaylists.slice(2);
+      // Remove the first two playlists and keep up to 10
+      const filteredPlaylists = fetchedPlaylists.slice(2, 12);
       const playlistsWithImages = await Promise.all(
         filteredPlaylists.map(fetchImageForPlaylist)
       );
@@ -191,8 +191,6 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
     </div>
   );
 
-  const playlistsToShow = playlists.slice(0, 5); // Adjust the number as needed
-
   return (
     <div className="mt-6 h-full pb-20">
       {/* Playlists Section */}
@@ -207,8 +205,8 @@ const Suggestion: React.FC<SuggestionProps> = ({ searchQuery }) => {
       </div>
 
       <div className="text-white mt-4">
-        <div className="overflow-x-auto flex gap-4 no-scrollbar">
-          {playlistsToShow.map((playlist, index) => (
+        <div className="overflow-x-auto flex gap-6  space-x-2 no-scrollbar">
+          {playlists.slice(0, showAllPlaylists ? playlists.length : 6).map((playlist, index) => (
             <div key={index} className="flex-shrink-0">
               <PlaylistCard 
                 id={playlist.id}

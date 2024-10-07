@@ -59,6 +59,7 @@ const Player = () => {
     artist: "",
   };
 
+  console.log(currentSong);
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
@@ -145,7 +146,7 @@ const Player = () => {
       <audio ref={audioRef} src={currentSong?.url || ""} />
       <div className="md:flex w-full flex justify-between">
         <div className="md:flex md:flex-row flex-col w-[16%]  items-center gap-4">
-          <div className="lg:block hidden">
+          <div className="hidden lg:block">
             <div className="text-md uppercase">
               {truncateText(currentSong.title, 10)}
             </div>

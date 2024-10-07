@@ -8,7 +8,7 @@ const Center: React.FC<PlaylistProps> = () => {
 
   return (
     <div
-      className={`flex flex-col h-full pb-3 no-scrollbar w-full px-4 md:px-6 bg-[#18191b] text-white overflow-hidden`}
+      className={`flex flex-col h-full pb-3 max-w-[70vw] no-scrollbar w-full px-4 md:px-6 bg-[#18191b] text-white overflow-hidden`}
     >
       <div className="h-[9%]">
         <Navigation />

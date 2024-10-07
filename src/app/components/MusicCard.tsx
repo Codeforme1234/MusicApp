@@ -24,7 +24,7 @@ const MusicCard: React.FC<MusicItemProps> = ({
   onSelect,
 }) => {
   const [imageError, setImageError] = useState(false);
-  const firstWord = title.split(' ')[0];
+  const firstLetter = title.charAt(0).toUpperCase();
 
   return (
     <div
@@ -47,7 +47,7 @@ const MusicCard: React.FC<MusicItemProps> = ({
             <div className={`bg-black text-white flex items-center justify-center ${
               timeAgo ? "h-10 w-10 rounded-sm text-xs" : "h-[200px] w-[200px] rounded-xl text-lg"
             }`}>
-              {firstWord}
+              {firstLetter}
             </div>
           ) : (
             <Image

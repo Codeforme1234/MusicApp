@@ -61,7 +61,7 @@ const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
           />
         ) : (
           <div className="w-full h-full bg-black rounded-lg flex items-center justify-center">
-            <span className="text-white">{title.split(" ")[0]}</span>
+            <span className="text-white">{title.charAt(0).toUpperCase()}</span>
           </div>
         )}
         <div
