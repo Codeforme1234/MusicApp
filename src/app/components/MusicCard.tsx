@@ -2,6 +2,7 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import { playbtn } from "@/public";
 import { truncateText } from "../Utils/TruncateText";
+import { useState } from "react";
 
 interface MusicItemProps {
   image: StaticImageData | string;
@@ -22,6 +23,9 @@ const MusicCard: React.FC<MusicItemProps> = ({
   isSelected,
   onSelect,
 }) => {
+  const [imageError, setImageError] = useState(false);
+  const firstWord = title.split(' ')[0];
+
   return (
     <div
       className={`flex  justify-between cursor-pointer ${
@@ -39,15 +43,24 @@ const MusicCard: React.FC<MusicItemProps> = ({
             timeAgo ? "flex items-center w-12" : ""
           }`}
         >
-          <Image
-            className={`aspect-square overflow-hidden object-fill ${
-              timeAgo ? "h-10 w-10 rounded-sm" : "rounded-xl"
-            }`}
-            height={200}
-            width={200}
-            src={image}
-            alt={title}
-          />
+          {imageError ? (
+            <div className={`bg-black text-white flex items-center justify-center ${
+              timeAgo ? "h-10 w-10 rounded-sm text-xs" : "h-[200px] w-[200px] rounded-xl text-lg"
+            }`}>
+              {firstWord}
+            </div>
+          ) : (
+            <Image
+              className={`aspect-square overflow-hidden object-fill ${
+                timeAgo ? "h-10 w-10 rounded-sm" : "rounded-xl"
+              }`}
+              height={200}
+              width={200}
+              src={image}
+              alt={title}
+              onError={() => setImageError(true)}
+            />
+          )}
           <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300 ease-in-out rounded-xl"></div>
           {isSelected && (
             <div
