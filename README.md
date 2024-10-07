@@ -7,7 +7,6 @@ This is a music player web application built using **Next.js** for the frontend,
 - **Next.js**: Used for building the frontend, utilizing server-side rendering for better performance.
 - **Recoil**: Manages global state efficiently, especially for handling song data across components.
 - **TypeScript**: Ensures type safety across the application.
-- **Framer Motion**: To give animations in opening and closing of tabs.
 - **Tailwind CSS**: For styling the UI with a utility-first approach.
 
 ## Images

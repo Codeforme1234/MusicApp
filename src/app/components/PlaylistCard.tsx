@@ -12,20 +12,31 @@ interface Props {
 
 const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
   const setSelectedPlaylist = useSetRecoilState(selectedPlaylistAtom);
 
   useEffect(() => {
     async function fetchImage() {
-      const data = await fetchPixabayImageURL(title);
-      if (data) {
-        setImageUrl(data);
-      } else {
-        setImageUrl(`https://picsum.photos/240/240?random=${Math.random()}`);
+      try {
+        const data = await fetchPixabayImageURL(title);
+        if (data) {
+          setImageUrl(data);
+        } else {
+          setImageUrl(`https://picsum.photos/240/240?random=${id}`);
+        }
+      } catch (error) {
+        console.error("Error fetching image:", error);
+        setImageUrl(`https://picsum.photos/240/240?random=${id}`);
       }
     }
 
     fetchImage();
-  }, [title]);
+  }, [title, id]);
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageUrl(`https://picsum.photos/240/240?random=${id}`);
+  };
 
   const handleClick = () => {
     setSelectedPlaylist({ id, title, image: imageUrl });
@@ -37,16 +48,21 @@ const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
       onClick={handleClick}
     >
       <div
-        className={`relative h-[10rem] md:h-[12rem] rounded-lg  aspect-square `}
+        className={`relative h-[10rem] md:h-[12rem] rounded-lg aspect-square `}
       >
-        {imageUrl && (
+        {imageUrl && !imageError ? (
           <Image
             className="aspect-square object-cover rounded-lg"
             height={200}
             width={200}
             src={imageUrl}
             alt={title}
+            onError={handleImageError}
           />
+        ) : (
+          <div className="w-full h-full bg-gray-300 rounded-lg flex items-center justify-center">
+            <span className="text-gray-600">Image not available</span>
+          </div>
         )}
         <div
           className={`absolute inset-0 rounded-lg transition-opacity duration-200 ${

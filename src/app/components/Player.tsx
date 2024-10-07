@@ -144,7 +144,7 @@ const Player = () => {
     <div className="text-white ps-5  w-screen h-full flex opacity-85 items-center pb-3 pt-2 bg-black">
       <audio ref={audioRef} src={currentSong?.url || ""} />
       <div className="md:flex w-full flex justify-between">
-        <div className="hidden md:flex md:flex-row flex-col w-[16%]  items-center gap-4">
+        <div className="md:flex md:flex-row flex-col w-[16%]  items-center gap-4">
           <div className="lg:block hidden">
             <div className="text-md uppercase">
               {truncateText(currentSong.title, 10)}
