@@ -60,8 +60,8 @@ const PlaylistCard: React.FC<Props> = ({ id, title, isSelected }) => {
             onError={handleImageError}
           />
         ) : (
-          <div className="w-full h-full bg-gray-300 rounded-lg flex items-center justify-center">
-            <span className="text-gray-600">Image not available</span>
+          <div className="w-full h-full bg-black rounded-lg flex items-center justify-center">
+            <span className="text-gray-600">{title}</span>
           </div>
         )}
         <div
